@@ -1,0 +1,309 @@
+/* =========================================
+   1. RESET & BODY (TEMA NUDE ELEGANCE)
+========================================= */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: #f4f0ea; color: #2c2c2c; }
+:root { 
+    --wf-light: #e3dcd2; /* Krem gelap untuk kotak gambar */
+    --wf-dark: #4a3f35;  /* Cokelat tua elegan untuk tombol & judul */
+}
+
+/* Biar background Navbar, Slider, dan Card ngikut estetik */
+.navbar, .hero-slider, .product-card, .footer { background-color: #fdfbf7; border-color: #e3dcd2; }
+.navbar { border-bottom: 2px solid var(--wf-light); }
+.hero-slider { border-bottom: 2px solid var(--wf-light); }
+/* Biar background Navbar, Slider, dan Card ngikut estetik */
+.navbar, .hero-slider, .product-card, .footer { background-color: #fdfbf7; border-color: #e3dcd2; }
+.navbar { border-bottom: 2px solid var(--wf-light); }
+.hero-slider { border-bottom: 2px solid var(--wf-light); }
+/* Biar background Navbar, Slider, dan Card ngikut estetik */
+.navbar, .hero-slider, .product-card, .footer { background-color: #fdfbf7; border-color: #e3dcd2; }
+.navbar { border-bottom: 2px solid var(--wf-light); }
+.hero-slider { border-bottom: 2px solid var(--wf-light); }
+
+/* =========================================
+   2. NAVBAR
+========================================= */
+.navbar { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 20px 5%; 
+    border-bottom: 2px solid var(--wf-light); 
+    background: #fdfbf7; 
+}
+
+/* Styling Logo Teks Premium (AURA) */
+.logo-text {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--wf-dark);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    font-family: 'Times New Roman', serif;
+    cursor: pointer;
+}
+
+/* Wadah Menu ke samping & ilangin titik */
+.nav-links { 
+    list-style: none; 
+    display: flex; 
+    gap: 30px; 
+}
+
+/* Tulisan Menu elegan */
+.nav-links li a { 
+    text-decoration: none; 
+    color: var(--wf-dark); 
+    padding: 5px 15px; 
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.nav-links li a:hover {
+    color: #000; 
+}
+
+.nav-icons { 
+    display: flex; 
+    gap: 20px; 
+    font-size: 20px; 
+    color: var(--wf-dark); 
+}
+
+.nav-icons a { 
+    color: var(--wf-dark); 
+    text-decoration: none; 
+}   
+
+/* Biar pas disorot mouse ada efeknya sedikit */
+.nav-links li a:hover {
+    color: #000; 
+}
+.nav-icons { display: flex; gap: 20px; font-size: 20px; color: var(--wf-dark); }
+.nav-icons a { color: var(--wf-dark); text-decoration: none; }
+
+/* =========================================
+   3. HERO SLIDER (GESER MULUS)
+========================================= */
+.hero-slider { position: relative; width: 100%; overflow: hidden; border-bottom: 2px solid var(--wf-light); background: #fff; }
+.slider-track { display: flex; width: 100%; transition: transform 0.6s ease-in-out; }
+.slide { min-width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 50px 5%; box-sizing: border-box; }
+.hero-left { width: 45%; }
+.hero-right { width: 50%; }
+
+/* Ini dia biang kerok yang bikin kotak di slider ilang! */
+.wireframe-title-large { width: 100%; margin-bottom: 20px; }
+.wireframe-title-large h1 { font-size: 40px; color: #333; }
+.wireframe-text-line { width: 90%; height: 15px; background-color: var(--wf-light); margin-bottom: 10px; }
+.wireframe-text-line.short { width: 60%; margin-bottom: 30px; }
+.wireframe-btn { width: 120px; height: 40px; background-color: var(--wf-dark); }
+.wireframe-img-large { width: 100%; height: 400px; background-color: var(--wf-light); border-radius: 8px; }
+
+/* Titik-titik Slider */
+.slider-dots { position: absolute; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 10px; }
+.dot { width: 12px; height: 12px; background-color: #d1d5db; border-radius: 50%; cursor: pointer; transition: 0.3s; }
+.dot.active, .dot:hover { background-color: #6b7280; }
+
+/* =========================================
+   4. BRAND SHOWCASE (3 KOLOM EKSKLUSIF)
+========================================= */
+.brand-showcase { padding: 60px 5%; }
+.brand-container { display: flex; gap: 20px; height: 450px; }
+.brand-item { flex: 1; position: relative; overflow: hidden; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.brand-item:hover { flex: 1.5; filter: brightness(0.95); }
+.brand-overlay h2 { font-size: 28px; letter-spacing: 5px; color: #555; text-align: center; }
+.wf-line-short { width: 40px; height: 2px; background-color: var(--wf-dark); margin: 10px auto; }
+.brand-saff { background-color: #e2e2e2; }
+.brand-octarine { background-color: #ebebeb; }
+.brand-scarlett { background-color: #dfdfdf; }
+
+/* =========================================
+   5. GRID PRODUK (YANG TADI MENGHILANG)
+========================================= */
+.products-section { padding: 50px 5%; }
+.section-title-placeholder { width: 250px; height: 30px; background-color: var(--wf-light); margin-bottom: 30px; }
+.product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.product-card { border: 2px solid var(--wf-light); padding: 15px; display: flex; flex-direction: column; gap: 15px; background: #fff; border-radius: 8px; }
+.card-img { width: 100%; aspect-ratio: 1 / 1; background-color: var(--wf-light); border-radius: 4px; }
+.card-text-long { width: 100%; height: 15px; background-color: var(--wf-light); }
+.card-text-short { width: 60%; height: 15px; background-color: var(--wf-light); }
+.card-btn { width: 40%; height: 30px; background-color: var(--wf-dark); margin-top: auto; border-radius: 4px; }
+
+/* =========================================
+   6. FOOTER
+========================================= */
+.footer { padding: 60px 5% 30px; border-top: 2px solid var(--wf-light); background-color: #fff; margin-top: 50px; }
+.footer-container { display: flex; justify-content: space-between; gap: 40px; margin-bottom: 50px; }
+.footer-col { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+.footer-title { width: 60%; height: 25px; background-color: var(--wf-dark); margin-bottom: 15px; }
+.footer-link { width: 85%; height: 12px; background-color: var(--wf-light); }
+.footer-bottom { padding-top: 30px; border-top: 1px solid var(--wf-light); display: flex; justify-content: center; }
+.footer-copyright { width: 300px; height: 15px; background-color: var(--wf-light); }
+
+/* =========================================
+   7. HALAMAN BRANDS (TIPOGRAFI EKSKLUSIF)
+========================================= */
+.brand-text-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 70px; /* Jarak antar nama brand */
+    flex-wrap: wrap; 
+    margin-top: 40px;
+}
+
+.brand-text-item {
+    cursor: pointer;
+    transition: all 0.4s ease;
+    opacity: 0.6; /* Agak pudar pas diam biar estetik */
+}
+
+/* Pas disorot mouse, teksnya nyala dan sedikit membesar */
+.brand-text-item:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* 1. Karakter Saff & Co (Bersih, Renggang, Modern) */
+.brand-saff-text h3 {
+    font-family: 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: 8px;
+    color: var(--wf-dark);
+}
+
+/* 2. Karakter Octarine (Tegas, Klasik, Mahal) */
+.brand-octa-text h3 {
+    font-family: 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: 4px;
+    color: var(--wf-dark);
+}
+
+/* 3. Karakter Scarlett (Elegan, Miring / Italic, Feminin) */
+.brand-scarlett-text h3 {
+    font-family: 'Georgia', serif;
+    font-weight: normal;
+    font-size: 32px;
+    font-style: italic;
+    letter-spacing: 2px;
+    color: var(--wf-dark);
+}
+/* =========================================
+   8. HORIZONTAL SCROLL PRODUK (KATALOG)
+========================================= */
+.product-scroll {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto; /* Bikin bisa digeser ke samping */
+    padding-bottom: 20px; 
+    scroll-snap-type: x mandatory; /* Bikin geserannya mulus dan nge-lock di tiap produk */
+    
+    /* Nyembunyiin scrollbar jelek bawaan browser biar estetik */
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+}
+
+.product-scroll::-webkit-scrollbar {
+    display: none; 
+}
+
+/* Biar ukuran kotaknya fix dan gak penyok pas digeser */
+.product-scroll .product-card {
+    flex: 0 0 280px; /* Lebar per produk 280px */
+    scroll-snap-align: start;
+}
+/* =========================================
+   9. HALAMAN TENTANG KAMI (ABOUT US)
+========================================= */
+.about-section { 
+    padding: 100px 5% 50px; 
+    text-align: center; 
+}
+
+.about-header h1 { 
+    font-size: 45px; 
+    color: var(--wf-dark); 
+    letter-spacing: 6px; 
+    margin-bottom: 15px; 
+}
+
+.about-header p { 
+    color: #666; 
+    font-style: italic; 
+    letter-spacing: 1px; 
+    margin-bottom: 50px; 
+}
+
+.about-content { 
+    max-width: 800px; 
+    margin: 0 auto 80px; 
+    line-height: 1.8; 
+    color: #444; 
+    font-size: 18px; 
+}
+
+.team-section h2 { 
+    font-size: 24px; 
+    color: var(--wf-dark); 
+    letter-spacing: 4px; 
+    margin-bottom: 40px; 
+}
+
+.team-grid { 
+    display: flex; 
+    justify-content: center; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+}
+
+/* Kotak nama anggota kelompok bergaya minimalis */
+.team-member { 
+    padding: 15px 30px; 
+    border: 1px solid var(--wf-light); 
+    color: var(--wf-dark); 
+    font-weight: 600; 
+    letter-spacing: 2px; 
+    transition: all 0.3s ease; 
+    cursor: default;
+    background-color: #fdfbf7;
+}
+
+.team-member:hover { 
+    background-color: var(--wf-dark); 
+    color: #fff; 
+    transform: translateY(-5px); 
+    border-color: var(--wf-dark);
+}
+/* =========================================
+   10. HALAMAN CART / CHECKOUT (ALA SHOPEE)
+========================================= */
+.cart-section { padding: 50px 5%; display: flex; gap: 30px; align-items: flex-start; }
+.cart-left { flex: 2; display: flex; flex-direction: column; gap: 20px; }
+.cart-right { flex: 1; background: #fff; padding: 25px; border: 1px solid var(--wf-light); border-radius: 8px; position: sticky; top: 20px; }
+
+/* Box ala Shopee */
+.checkout-box { background: #fff; padding: 25px; border: 1px solid var(--wf-light); border-radius: 8px; }
+.box-title { font-size: 18px; color: var(--wf-dark); margin-bottom: 15px; border-bottom: 1px solid var(--wf-light); padding-bottom: 10px; font-weight: 600; letter-spacing: 1px;}
+
+/* Item Keranjang */
+.cart-item { display: flex; gap: 20px; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+.item-img { width: 80px; height: 80px; background: var(--wf-light); border-radius: 4px; }
+.item-info { flex: 1; }
+.item-price { font-weight: bold; color: var(--wf-dark); }
+
+/* Tombol Checkout */
+.btn-checkout { width: 100%; padding: 15px; background: var(--wf-dark); color: #fff; border: none; font-size: 16px; font-weight: bold; letter-spacing: 2px; cursor: pointer; margin-top: 20px; border-radius: 4px; transition: 0.3s; }
+.btn-checkout:hover { background: #000; }
+
+/* =========================================
+   11. HALAMAN LOGIN
+========================================= */
+.login-section { padding: 100px 5%; display: flex; justify-content: center; min-height: 60vh; }
+.login-box { width: 400px; background: #fff; padding: 40px; border: 1px solid var(--wf-light); border-radius: 8px; text-align: center; }
+.login-box h2 { letter-spacing: 3px; color: var(--wf-dark); margin-bottom: 30px; }
+.login-input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid var(--wf-light); border-radius: 4px; font-family: inherit; }
