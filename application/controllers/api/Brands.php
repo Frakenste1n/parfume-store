@@ -1,213 +1,104 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require APPPATH . 'libraries/REST_Controller.php';
-require APPPATH . 'libraries/Format.php';
-
-use chriskacerguis\RestServer\RestController;
-
-class Brands extends RestController
+require APPPATH.'core/Base_api.php';
+class Brands extends Base_api
 {
-
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Brand', 'Brand');
+        $this->load->model('Brand_model');
     }
 
-    // GET ALL
     public function index_get()
     {
-        $data = $this->Brand->getAll();
+        $data = $this->Brand_model->get_all();
 
-        $this->response([
-            'status' => true,
-            'data' => $data
-        ], 200);
+        return $this->success_response(
+            'Data brand berhasil diambil',
+            $data
+        );
     }
 
-    // DETAIL
-    public function show_get($id = null)
+    public function show_get($id)
     {
-        $data = $this->Brand->getById($id);
-
-        if (!$data) {
-            $this->response([
-                'status' => false,
-                'message' => 'Brand not found'
-            ], 404);
-            return;
-        }
-
-        $this->response([
-            'status' => true,
-            'data' => $data
-        ], 200);
-    }
-
-    // CREATE
-    public function index_post()
-    {
-        $logo = $this->uploadLogo();
-
-
-        if ($logo === false) {
-            $this->response([
-                'status' => false,
-                'message' => strip_tags($this->upload->display_errors())
-            ], 400);
-            return;
-        }
-
-        $data = [
-            'name' => $this->post('name'),
-            'logo' => $logo,
-            'description' => $this->post('description'),
-            'website' => $this->post('website'),
-            'instagram' => $this->post('instagram'),
-            'origin_country' => $this->post('origin_country'),
-            'is_featured' => $this->post('is_featured') ?? 0,
-            'is_active' => $this->post('is_active') ?? 1,
-        ];
-
-        $this->Brand->create($data);
-
-        $this->response([
-            'status' => true,
-            'message' => 'Brand created'
-        ], 201);
-
-
-    }
-
-
-    // UPDATE
-    public function update_post($id)
-    {
-        $brand = $this->Brand->getById($id);
-
+        $brand = $this->Brand_model->find($id);
 
         if (!$brand) {
-            $this->response([
-                'status' => false,
-                'message' => 'Brand not found'
-            ], 404);
-            return;
+            return $this->error_response('Data tidak ditemukan');
         }
 
-        $logo = $this->uploadLogo();
+        return $this->success_response(
+            'Detail brand',
+            $brand
+        );
+    }
 
-        if ($logo === false) {
-            $this->response([
-                'status' => false,
-                'message' => strip_tags($this->upload->display_errors())
-            ], 400);
-            return;
-        }
-
-        if ($logo) {
-
-            $oldFile = FCPATH . 'uploads/brands/' . $brand->logo;
-
-            if (!empty($brand->logo) && file_exists($oldFile)) {
-                unlink($oldFile);
-            }
-
-        } else {
-            $logo = $brand->logo;
-        }
-
+    public function store_post()
+    {
         $data = [
-            'name' => $this->post('name'),
-            'logo' => $logo,
-            'description' => $this->post('description'),
-            'website' => $this->post('website'),
-            'instagram' => $this->post('instagram'),
-            'origin_country' => $this->post('origin_country'),
-            'is_featured' => $this->post('is_featured'),
-            'is_active' => $this->post('is_active'),
+            'name'=>$this->post('name'),
+            'slug'=>$this->post('slug'),
+            'description'=>$this->post('description'),
+            'website'=>$this->post('website'),
+            'instagram'=>$this->post('instagram'),
+            'origin_country'=>$this->post('origin_country'),
+            'is_featured'=>$this->post('is_featured'),
+            'is_active'=>$this->post('is_active')
         ];
 
-        $this->Brand->update($id, $data);
+        if (!empty($_FILES['logo']['name'])) {
 
-        $this->response([
-            'status' => true,
-            'message' => 'Brand updated'
-        ], 200);
+            $upload = upload_image(
+                'logo',
+                './uploads/brands/'
+            );
 
-    }
+            if (!$upload['success']) {
+                return $this->error_response(
+                    $upload['message']
+                );
+            }
 
-
-    // DELETE
-    public function delete_post($id)
-{
-    $brand = $this->Brand->getById($id);
-
-    if (!$brand) {
-        $this->response([
-            'status' => false,
-            'message' => 'Brand not found'
-        ], 404);
-        return;
-    }
-
-    if (!empty($brand->logo)) {
-
-        $file = FCPATH.'uploads/brands/'.$brand->logo;
-
-        if(file_exists($file)){
-            unlink($file);
+            $data['logo'] = $upload['file_name'];
         }
 
+        $this->Brand_model->create($data);
+
+        return $this->success_response(
+            'Brand berhasil ditambahkan'
+        );
     }
 
-    $this->Brand->delete($id);
-
-    $this->response([
-        'status' => true,
-        'message' => 'Brand deleted successfully'
-    ], 200);
-}
-
-
-    // FEATURED
-    public function featured_get()
+    public function update_put($id)
     {
-        $data = $this->Brand->featured();
+        $data = [
+            'name'=>$this->put('name'),
+            'slug'=>$this->put('slug'),
+            'description'=>$this->put('description'),
+            'website'=>$this->put('website'),
+            'instagram'=>$this->put('instagram'),
+            'origin_country'=>$this->put('origin_country'),
+            'is_featured'=>$this->put('is_featured'),
+            'is_active'=>$this->put('is_active')
+        ];
 
-        $this->response([
-            'status' => true,
-            'data' => $data
-        ], 200);
+        $this->Brand_model->update(
+            $id,
+            $data
+        );
+
+        return $this->success_response(
+            'Brand berhasil diupdate'
+        );
     }
 
-    private function uploadLogo()
+    public function delete_delete($id)
     {
-        if (empty($_FILES['logo']['name'])) {
-            return null;
-        }
+        $this->Brand_model->delete($id);
 
-        $path = FCPATH . 'uploads/brands/';
-
-        if (!is_dir($path)) {
-            mkdir($path, 0777, true);
-        }
-
-        $config['upload_path'] = $path;
-        $config['allowed_types'] = 'jpg|jpeg|png|webp';
-        $config['encrypt_name'] = true;
-        $config['max_size'] = 2048;
-
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload('logo')) {
-            return false;
-        }
-
-        $file = $this->upload->data();
-
-        return $file['file_name'];
-
+        return $this->success_response(
+            'Brand berhasil dihapus'
+        );
     }
-
 }

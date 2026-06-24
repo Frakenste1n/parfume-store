@@ -1,27 +1,22 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Parfume extends CI_Controller
+class Parfume extends MY_Controller
 {
     public function __construct()
     {
         parent::__construct();
+
+        $this->admin_only();
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | PAGE VIEW
-    |--------------------------------------------------------------------------
-    */
 
     public function index()
     {
         $data = [
-            'title' => 'Admin - Parfume Management',
+            'title' => 'Parfume',
             'content' => 'admin/parfume'
         ];
 
-        $this->load->view('admin/layouts/app', $data);
+        $this->render_admin($data);
     }
 }

@@ -1,52 +1,121 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<div class="categories-page">
 
-<div class="page-wrapper">
-
-    <!-- PAGE HEADER -->
+    <!-- HEADER -->
     <div class="page-header">
 
-        <div>
+        <div class="page-header-text">
 
-            <div class="page-badge">
-                <i class="bi bi-tags"></i>
-                Admin Panel
-            </div>
-
-            <h1 class="page-title">
+            <h2>
                 Category Management
-            </h1>
+            </h2>
 
-            <p class="page-subtitle">
-                Organize perfume categories for better product structure
+            <p>
+                Organize perfume categories for better product structure.
             </p>
 
         </div>
 
         <button
-            class="btn-primary-action"
-            onclick="openCreateModal()">
+            type="button"
+            class="btn-add-category"
+            data-bs-toggle="modal"
+            data-bs-target="#createCategoryModal">
 
             <i class="bi bi-plus-lg"></i>
-            New Category
+
+            <span>Add Category</span>
 
         </button>
 
     </div>
 
-    <!-- SEARCH -->
-    <div class="card ui-card mt-4">
 
-        <div class="card-body">
+    <!-- STATISTICS -->
+    <div class="row g-3 g-md-4 mb-4">
 
-            <div class="search-box">
+        <div class="col-6 col-xl-3">
 
-                <i class="bi bi-search"></i>
+            <div class="stats-card stat-total">
 
-                <input
-                    type="text"
-                    id="searchCategory"
-                    placeholder="Search categories..."
-                    autocomplete="off">
+                <div class="icon-box">
+                    <i class="bi bi-grid"></i>
+                </div>
+
+                <div class="stats-card-body">
+
+                    <span>Total Categories</span>
+
+                    <h3 id="totalCategories">
+                        0
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-6 col-xl-3">
+
+            <div class="stats-card stat-active">
+
+                <div class="icon-box">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+
+                <div class="stats-card-body">
+
+                    <span>Active</span>
+
+                    <h3 id="totalActive">
+                        0
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-6 col-xl-3">
+
+            <div class="stats-card stat-inactive">
+
+                <div class="icon-box">
+                    <i class="bi bi-slash-circle"></i>
+                </div>
+
+                <div class="stats-card-body">
+
+                    <span>Inactive</span>
+
+                    <h3 id="totalInactive">
+                        0
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-6 col-xl-3">
+
+            <div class="stats-card stat-described">
+
+                <div class="icon-box">
+                    <i class="bi bi-card-text"></i>
+                </div>
+
+                <div class="stats-card-body">
+
+                    <span>With Description</span>
+
+                    <h3 id="totalDescribed">
+                        0
+                    </h3>
+
+                </div>
 
             </div>
 
@@ -54,27 +123,203 @@
 
     </div>
 
-    <!-- TABLE CARD -->
-    <div class="card ui-card mt-4">
 
-        <div class="card-body p-0">
+    <!-- TABLE -->
+    <div class="content-card categories-table-card">
 
-            <div class="table-responsive">
+        <div class="table-card-header">
 
-                <table class="table ui-table">
+            <div class="table-card-title">
 
-                    <thead>
+                <div class="table-card-icon">
+                    <i class="bi bi-folder2-open"></i>
+                </div>
 
-                        <tr>
-                            <th>Category</th>
-                            <th width="120">Action</th>
-                        </tr>
+                <div>
 
-                    </thead>
+                    <h5>
+                        All Categories
+                    </h5>
 
-                    <tbody id="categoryTableBody"></tbody>
+                    <p>
+                        Daftar lengkap kategori produk parfum
+                    </p>
 
-                </table>
+                </div>
+
+            </div>
+
+            <span class="table-count-badge" id="tableCategoryCount">
+                0 categories
+            </span>
+
+        </div>
+
+        <div class="categories-table-wrap">
+
+            <table class="table categories-table align-middle w-100" id="categoriesTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Category</th>
+
+                        <th>Description</th>
+
+                        <th>Status</th>
+
+                        <th>Created</th>
+
+                        <th class="text-end">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CREATE MODAL -->
+<div
+    class="modal fade"
+    id="createCategoryModal"
+    tabindex="-1"
+    aria-labelledby="createCategoryModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+
+        <div class="modal-content border-0 rounded-4">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="createCategoryModalLabel">
+                    Add Category
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form id="createCategoryForm">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label" for="create_name">
+                                Category Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="create_name"
+                                name="name"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label" for="create_slug">
+                                Slug
+                            </label>
+
+                            <input
+                                type="text"
+                                id="create_slug"
+                                name="slug"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <label class="form-label" for="create_description">
+                                Description
+                            </label>
+
+                            <textarea
+                                id="create_description"
+                                name="description"
+                                rows="4"
+                                class="form-control"
+                                placeholder="Deskripsi singkat kategori..."></textarea>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label" for="create_is_active">
+                                Status
+                            </label>
+
+                            <select
+                                id="create_is_active"
+                                name="is_active"
+                                class="form-select">
+
+                                <option value="1">
+                                    Active
+                                </option>
+
+                                <option value="0">
+                                    Inactive
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer flex-column flex-sm-row gap-2">
+
+                <button
+                    type="button"
+                    class="btn btn-light w-100 w-sm-auto"
+                    data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-primary w-100 w-sm-auto"
+                    id="btnCreateCategory">
+
+                    Save Category
+
+                </button>
 
             </div>
 
@@ -84,74 +329,136 @@
 
 </div>
 
-<!-- MODAL -->
-<div class="modal fade" id="categoryModal">
 
-    <div class="modal-dialog modal-dialog-centered">
+<!-- EDIT MODAL -->
+<div
+    class="modal fade"
+    id="editCategoryModal"
+    tabindex="-1"
+    aria-labelledby="editCategoryModalLabel"
+    aria-hidden="true">
 
-        <div class="modal-content ui-modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
 
-            <form id="categoryForm">
+        <div class="modal-content border-0 rounded-4">
 
-                <div class="modal-header">
+            <div class="modal-header">
 
-                    <div>
+                <h5 class="modal-title" id="editCategoryModalLabel">
+                    Edit Category
+                </h5>
 
-                        <h5 id="modalTitle">Create Category</h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
 
-                        <small class="text-muted">
-                            Simple category setup
-                        </small>
+            </div>
+
+            <div class="modal-body">
+
+                <form id="editCategoryForm">
+
+                    <input type="hidden" name="id" id="edit_id">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label" for="edit_name">
+                                Category Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="edit_name"
+                                name="name"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label" for="edit_slug">
+                                Slug
+                            </label>
+
+                            <input
+                                type="text"
+                                id="edit_slug"
+                                name="slug"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <label class="form-label" for="edit_description">
+                                Description
+                            </label>
+
+                            <textarea
+                                id="edit_description"
+                                name="description"
+                                rows="4"
+                                class="form-control"></textarea>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label" for="edit_is_active">
+                                Status
+                            </label>
+
+                            <select
+                                id="edit_is_active"
+                                name="is_active"
+                                class="form-select">
+
+                                <option value="1">
+                                    Active
+                                </option>
+
+                                <option value="0">
+                                    Inactive
+                                </option>
+
+                            </select>
+
+                        </div>
 
                     </div>
 
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </form>
 
-                </div>
+            </div>
 
-                <div class="modal-body">
+            <div class="modal-footer flex-column flex-sm-row gap-2">
 
-                    <input type="hidden" id="categoryId">
+                <button
+                    type="button"
+                    class="btn btn-light w-100 w-sm-auto"
+                    data-bs-dismiss="modal">
 
-                    <label class="form-label">
-                        Category Name
-                    </label>
+                    Cancel
 
-                    <input
-                        type="text"
-                        id="category_name"
-                        class="form-control ui-input"
-                        placeholder="Example: Men Perfume">
+                </button>
 
-                    <div class="input-hint">
-                        Use clear and simple naming for better organization
-                    </div>
+                <button
+                    type="button"
+                    class="btn btn-primary w-100 w-sm-auto"
+                    id="btnUpdateCategory">
 
-                </div>
+                    Update Category
 
-                <div class="modal-footer">
+                </button>
 
-                    <button
-                        type="button"
-                        class="btn-soft"
-                        data-bs-dismiss="modal">
-
-                        Cancel
-
-                    </button>
-
-                    <button
-                        type="submit"
-                        class="btn-primary-action">
-
-                        <i class="bi bi-check2"></i>
-                        Save
-
-                    </button>
-
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
@@ -159,420 +466,16 @@
 
 </div>
 
-<!-- EMPTY STATE -->
-<template id="emptyStateTemplate">
 
-<tr>
+<link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
 
-    <td colspan="2">
+<link
+    rel="stylesheet"
+    href="<?= base_url('assets/css/categories.css') ?>">
 
-        <div class="empty-state">
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 
-            <i class="bi bi-folder-x"></i>
-
-            <h4>No Categories</h4>
-
-            <p>Start by creating your first category</p>
-
-        </div>
-
-    </td>
-
-</tr>
-
-</template>
-
-<!-- LOADING -->
-<template id="loadingTemplate">
-
-<tr>
-
-    <td colspan="2">
-
-        <div class="loading-state">
-
-            <div class="spinner-border"></div>
-
-            <p>Loading categories...</p>
-
-        </div>
-
-    </td>
-
-</tr>
-
-</template>
-
-<style>
-
-:root{
-    --bg:#f8fafc;
-    --card:#ffffff;
-    --text:#0f172a;
-    --muted:#64748b;
-    --border:#e2e8f0;
-}
-
-/* PAGE */
-.page-wrapper{
-    animation:fade .25s ease;
-}
-
-@keyframes fade{
-    from{opacity:0;transform:translateY(8px)}
-    to{opacity:1;transform:translateY(0)}
-}
-
-/* HEADER */
-.page-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:20px;
-
-    padding:28px;
-
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-}
-
-.page-badge{
-    display:inline-flex;
-    gap:8px;
-    align-items:center;
-
-    font-size:12px;
-    font-weight:600;
-
-    color:var(--muted);
-    margin-bottom:10px;
-}
-
-.page-title{
-    font-size:26px;
-    font-weight:700;
-    color:var(--text);
-    margin:0;
-}
-
-.page-subtitle{
-    margin-top:6px;
-    color:var(--muted);
-}
-
-/* BUTTON */
-.btn-primary-action{
-    background:#111827;
-    color:#fff;
-
-    border:none;
-    padding:11px 16px;
-
-    border-radius:12px;
-
-    font-weight:600;
-
-    display:flex;
-    gap:8px;
-    align-items:center;
-
-    transition:.2s ease;
-}
-
-.btn-primary-action:hover{
-    transform:translateY(-2px);
-    background:#1f2937;
-}
-
-.btn-soft{
-    background:#f1f5f9;
-    border:none;
-    padding:10px 14px;
-    border-radius:12px;
-}
-
-/* CARD */
-.ui-card{
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:var(--card);
-}
-
-/* SEARCH */
-.search-box{
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    padding:12px 14px;
-
-    border:1px solid var(--border);
-    border-radius:14px;
-}
-
-.search-box i{
-    color:var(--muted);
-}
-
-.search-box input{
-    border:none;
-    outline:none;
-    width:100%;
-}
-
-/* TABLE */
-.ui-table thead th{
-    font-size:12px;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:.04em;
-
-    padding:16px;
-    border-bottom:1px solid var(--border);
-}
-
-.ui-table tbody td{
-    padding:18px 16px;
-    border-bottom:1px solid #f1f5f9;
-}
-
-.ui-table tbody tr:hover{
-    background:#f8fafc;
-}
-
-/* CATEGORY ITEM */
-.category-name{
-    font-weight:600;
-    color:var(--text);
-}
-
-.category-meta{
-    font-size:12px;
-    color:var(--muted);
-    margin-top:2px;
-}
-
-/* ACTION */
-.action-btn{
-    width:36px;
-    height:36px;
-
-    border:none;
-    border-radius:10px;
-
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-
-    transition:.2s;
-}
-
-.action-btn:hover{
-    transform:translateY(-2px);
-}
-
-.edit-btn{
-    background:#f59e0b;
-    color:white;
-}
-
-.delete-btn{
-    background:#ef4444;
-    color:white;
-}
-
-/* MODAL */
-.ui-modal{
-    border:none;
-    border-radius:18px;
-    overflow:hidden;
-}
-
-.input-hint{
-    font-size:12px;
-    color:var(--muted);
-    margin-top:6px;
-}
-
-/* EMPTY */
-.empty-state{
-    text-align:center;
-    padding:50px 20px;
-    color:var(--muted);
-}
-
-.empty-state i{
-    font-size:42px;
-    margin-bottom:10px;
-}
-
-/* LOADING */
-.loading-state{
-    text-align:center;
-    padding:40px;
-    color:var(--muted);
-}
-
-</style>
-
-<script>
-
-const API = '<?= base_url("api/categories") ?>';
-
-let modal;
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    modal = new bootstrap.Modal(
-        document.getElementById('categoryModal')
-    );
-
-    load();
-    search();
-    submit();
-
-});
-
-async function load(){
-
-    const tbody = document.getElementById('categoryTableBody');
-
-    tbody.innerHTML = document.getElementById('loadingTemplate').innerHTML;
-
-    const res = await fetch(API);
-    const json = await res.json();
-
-    const data = json.data || [];
-
-    if(data.length === 0){
-        tbody.innerHTML = document.getElementById('emptyStateTemplate').innerHTML;
-        return;
-    }
-
-    let html = '';
-
-    data.forEach(c => {
-
-        html += `
-        <tr>
-
-            <td>
-
-                <div class="category-name">
-                    ${c.category_name}
-                </div>
-
-                <div class="category-meta">
-                    ID #${c.id}
-                </div>
-
-            </td>
-
-            <td>
-
-                <button class="action-btn edit-btn" onclick="edit(${c.id})">
-                    <i class="bi bi-pencil"></i>
-                </button>
-
-                <button class="action-btn delete-btn" onclick="remove(${c.id})">
-                    <i class="bi bi-trash"></i>
-                </button>
-
-            </td>
-
-        </tr>`;
-    });
-
-    tbody.innerHTML = html;
-
-}
-
-function openCreateModal(){
-
-    document.getElementById('categoryForm').reset();
-    document.getElementById('categoryId').value = '';
-    document.getElementById('modalTitle').innerText = 'Create Category';
-
-    modal.show();
-
-}
-
-function submit(){
-
-    document.getElementById('categoryForm').addEventListener('submit', async e => {
-
-        e.preventDefault();
-
-        const id = document.getElementById('categoryId').value;
-        const name = document.getElementById('category_name').value;
-
-        const url = id ? `${API}/${id}` : API;
-        const method = id ? 'PUT' : 'POST';
-
-        const res = await fetch(url, {
-            method,
-            headers:{'Content-Type':'application/x-www-form-urlencoded'},
-            body:new URLSearchParams({category_name:name})
-        });
-
-        const json = await res.json();
-
-        if(json.status){
-            modal.hide();
-            load();
-        }
-
-    });
-
-}
-
-async function edit(id){
-
-    const res = await fetch(`${API}/${id}`);
-    const json = await res.json();
-
-    const c = json.data;
-
-    document.getElementById('categoryId').value = c.id;
-    document.getElementById('category_name').value = c.category_name;
-    document.getElementById('modalTitle').innerText = 'Edit Category';
-
-    modal.show();
-
-}
-
-async function remove(id){
-
-    const ok = await Swal.fire({
-        title:'Delete?',
-        text:'This action cannot be undone',
-        icon:'warning',
-        showCancelButton:true
-    });
-
-    if(!ok.isConfirmed) return;
-
-    await fetch(`${API}/${id}`, {
-        method:'DELETE'
-    });
-
-    load();
-
-}
-
-function search(){
-
-    document.getElementById('searchCategory').addEventListener('keyup', function(){
-
-        const val = this.value.toLowerCase();
-
-        document.querySelectorAll('#categoryTableBody tr').forEach(row => {
-            row.style.display = row.innerText.toLowerCase().includes(val) ? '' : 'none';
-        });
-
-    });
-
-}
-
-</script>
+<script src="<?= base_url('assets/js/categories.js') ?>"></script>

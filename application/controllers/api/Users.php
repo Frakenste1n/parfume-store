@@ -1,152 +1,94 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require APPPATH . 'libraries/REST_Controller.php';
-require APPPATH . 'libraries/Format.php';
+require APPPATH.'core/Base_api.php';
 
-use chriskacerguis\RestServer\RestController;
-
-class Users extends RestController {
-
+class Users extends Base_api
+{
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('User', 'User');
+        $this->load->model('User_model');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | GET ALL USERS
-    |--------------------------------------------------------------------------
-    */
-    public function index_get()
+    // GET BY ID
+    public function index_get($id = null)
     {
-        $users = $this->User->getAll();
-
-        $this->response([
-            'status' => true,
-            'data' => $users
-        ], 200);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | GET DETAIL USER
-    |--------------------------------------------------------------------------
-    */
-    public function detail_get($id = null)
-    {
-        if (!$id) {
-            return $this->response([
-                'status' => false,
-                'message' => 'ID wajib diisi'
-            ], 400);
+        if ($id === null) {
+            return $this->success_response(
+                'Data user berhasil diambil',
+                $this->User_model->get_all()
+            );
         }
 
-        $user = $this->User->getDetail($id);
+        $user = $this->User_model->find($id);
 
         if (!$user) {
-            return $this->response([
-                'status' => false,
-                'message' => 'User tidak ditemukan'
-            ], 404);
+            return $this->error_response('User tidak ditemukan');
         }
 
-        $this->response([
-            'status' => true,
-            'data' => $user
-        ], 200);
+        return $this->success_response(
+            'Detail user berhasil diambil',
+            $user
+        );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | CREATE USER (REGISTER)
-    |--------------------------------------------------------------------------
-    */
+    // CREATE
     public function index_post()
     {
-        $name     = $this->post('name');
-        $email    = $this->post('email');
-        $password = $this->post('password');
-
-        if (!$name || !$email || !$password) {
-            return $this->response([
-                'status' => false,
-                'message' => 'Data wajib diisi'
-            ], 400);
-        }
-
-        // hash password
         $data = [
-            'name' => $name,
-            'email' => $email,
-            'password' => password_hash($password, PASSWORD_BCRYPT)
+            'name'  => $this->post('name'),
+            'email' => $this->post('email'),
+            'phone' => $this->post('phone'),
+            'address' => $this->post('address'),
+            'role' => $this->post('role') ?? 'user',
+            'is_active' => 1,
+            'password' => password_hash($this->post('password'), PASSWORD_DEFAULT),
         ];
 
-        $id = $this->User->create($data);
+        $this->User_model->create($data);
 
-        $this->response([
-            'status' => true,
-            'message' => 'User berhasil dibuat',
-            'user_id' => $id
-        ], 201);
+        return $this->success_response('User berhasil dibuat', null, 201);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE USER
-    |--------------------------------------------------------------------------
-    */
-    public function index_put($id = null)
+    // UPDATE
+    public function index_put($id)
     {
-        if (!$id) {
-            return $this->response([
-                'status' => false,
-                'message' => 'ID wajib diisi'
-            ], 400);
+        $user = $this->User_model->find($id);
+
+        if (!$user) {
+            return $this->error_response('User tidak ditemukan');
         }
 
-        $data = [];
-
-        if ($this->put('name')) {
-            $data['name'] = $this->put('name');
-        }
-
-        if ($this->put('email')) {
-            $data['email'] = $this->put('email');
-        }
+        $data = [
+            'name'  => $this->put('name') ?? $user->name,
+            'email' => $this->put('email') ?? $user->email,
+            'phone' => $this->put('phone') ?? $user->phone,
+            'address' => $this->put('address') ?? $user->address,
+            'role' => $this->put('role') ?? $user->role,
+            'is_active' => $this->put('is_active') ?? $user->is_active,
+        ];
 
         if ($this->put('password')) {
-            $data['password'] = password_hash($this->put('password'), PASSWORD_BCRYPT);
+            $data['password'] = password_hash($this->put('password'), PASSWORD_DEFAULT);
         }
 
-        $this->User->update($id, $data);
+        $this->User_model->update($id, $data);
 
-        $this->response([
-            'status' => true,
-            'message' => 'User berhasil diupdate'
-        ], 200);
+        return $this->success_response('User berhasil diupdate');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | DELETE USER
-    |--------------------------------------------------------------------------
-    */
-    public function index_delete($id = null)
+    // DELETE
+    public function index_delete($id)
     {
-        if (!$id) {
-            return $this->response([
-                'status' => false,
-                'message' => 'ID wajib diisi'
-            ], 400);
+        $user = $this->User_model->find($id);
+
+        if (!$user) {
+            return $this->error_response('User tidak ditemukan');
         }
 
-        $this->User->delete($id);
+        $this->User_model->delete($id);
 
-        $this->response([
-            'status' => true,
-            'message' => 'User berhasil dihapus'
-        ], 200);
+        return $this->success_response('User berhasil dihapus');
     }
 }

@@ -1,15 +1,25 @@
+<?php
+$site_name = $site_name ?? 'Parfume CMS';
+$site_logo = $site_logo ?? '';
+$site_favicon = $site_favicon ?? '';
+$logo_url = $site_logo
+    ? $site_logo
+    : 'https://ui-avatars.com/api/?name=' . urlencode($site_name) . '&background=6366f1&color=fff&size=200';
+$favicon_href = $site_favicon ? $site_favicon : base_url('favicon.ico');
+?>
 <!DOCTYPE html>
-<html>
+<html lang="id">
 
 <head>
-    <title>Admin Login</title>
+    <title>Login - <?= htmlspecialchars($site_name, ENT_QUOTES, 'UTF-8') ?></title>
+    <link rel="icon" href="<?= htmlspecialchars($favicon_href, ENT_QUOTES, 'UTF-8') ?>">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
-
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -34,9 +44,23 @@
             opacity: 0.4;
         }
 
-        .blue { background: #3b82f6; top: -150px; left: -150px; }
-        .purple { background: #a855f7; bottom: -200px; right: -200px; }
-        .cyan { background: #22d3ee; top: 40%; left: 60%; }
+        .blue {
+            background: #3b82f6;
+            top: -150px;
+            left: -150px;
+        }
+
+        .purple {
+            background: #a855f7;
+            bottom: -200px;
+            right: -200px;
+        }
+
+        .cyan {
+            background: #22d3ee;
+            top: 40%;
+            left: 60%;
+        }
 
         /* LOGIN */
         .center {
@@ -65,7 +89,7 @@
             border-radius: 20px;
             overflow: hidden;
 
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
         }
 
@@ -82,23 +106,23 @@
         }
 
         .welcome p {
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.6);
             font-size: 13px;
         }
 
         label {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 13px;
         }
 
         .form-control {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
         }
 
         .form-control:focus {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-color: #3b82f6;
             box-shadow: none;
             color: white;
@@ -117,7 +141,7 @@
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(59,130,246,0.4);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
         }
 
         /* WAVES */
@@ -155,15 +179,20 @@
         }
 
         @keyframes waveMove {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         /* SUCCESS OVERLAY */
         .success-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(5,8,22,0.9);
+            background: rgba(5, 8, 22, 0.9);
             backdrop-filter: blur(10px);
 
             display: flex;
@@ -180,8 +209,15 @@
         }
 
         @keyframes pop {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .check {
@@ -204,7 +240,7 @@
             height: 35px;
             margin: 20px auto 0;
 
-            border: 3px solid rgba(255,255,255,0.2);
+            border: 3px solid rgba(255, 255, 255, 0.2);
             border-top-color: #3b82f6;
 
             border-radius: 50%;
@@ -212,126 +248,208 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
-
     </style>
 
 </head>
 
 <body>
 
-<!-- BACKGROUND -->
-<div class="bg">
-    <div class="glow blue"></div>
-    <div class="glow purple"></div>
-    <div class="glow cyan"></div>
-</div>
+    <!-- BACKGROUND -->
+    <div class="bg">
+        <div class="glow blue"></div>
+        <div class="glow purple"></div>
+        <div class="glow cyan"></div>
+    </div>
 
-<!-- LOGIN -->
-<div class="center">
+    <!-- LOGIN -->
+    <div class="center">
 
-    <div class="login-box">
+        <div class="login-box">
 
-        <div class="logo">
-            <img src="https://ui-avatars.com/api/?name=Parfume+CMS&background=0f172a&color=fff&size=200">
-        </div>
+            <div class="logo">
+                <img src="<?= htmlspecialchars($logo_url, ENT_QUOTES, 'UTF-8') ?>"
+                     alt="<?= htmlspecialchars($site_name, ENT_QUOTES, 'UTF-8') ?>">
+            </div>
 
-        <div class="welcome">
-            <h3>Selamat Datang</h3>
-            <p>Admin Panel Parfume Store</p>
-        </div>
+            <div class="welcome">
+                <h3>Selamat Datang</h3>
+                <p>Admin Panel <?= htmlspecialchars($site_name, ENT_QUOTES, 'UTF-8') ?></p>
+            </div>
 
-        <div class="text-start">
+            <div class="text-start">
 
-            <label>Email</label>
-            <input type="email" id="email" class="form-control">
+                <label>Email</label>
+                <input type="email" id="email" class="form-control mb-3" placeholder="Masukkan email">
 
-            <label>Password</label>
-            <input type="password" id="password" class="form-control">
+                <label>Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Masukkan password">
 
-            <button class="btn btn-login" onclick="login()">
-                Login
-            </button>
+                <button class="btn btn-login" id="btnLogin">
+                    <span id="btnText">
+                        Login
+                    </span>
 
-            <p id="msg" class="text-danger mt-3 text-center"></p>
+                    <span id="btnLoading" class="d-none">
+                        <span class="spinner-border spinner-border-sm"></span>
+                        Loading...
+                    </span>
+                </button>
+
+                <p id="msg" class="text-danger mt-3 text-center"></p>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
+    <!-- WAVES -->
+    <div class="wave-container">
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+        <div class="wave wave3"></div>
+    </div>
 
-<!-- WAVES -->
-<div class="wave-container">
-    <div class="wave wave1"></div>
-    <div class="wave wave2"></div>
-    <div class="wave wave3"></div>
-</div>
+    <!-- SUCCESS OVERLAY -->
+    <div id="successOverlay" class="success-overlay d-none">
 
-<!-- SUCCESS OVERLAY -->
-<div id="successOverlay" class="success-overlay d-none">
+        <div class="success-box">
 
-    <div class="success-box">
+            <div class="check">
+                <i class="bi bi-check2"></i>
+            </div>
 
-        <div class="check">
-            <i class="bi bi-check2"></i>
+            <h3>Login Berhasil</h3>
+            <p id="successWelcomeText">Selamat datang kembali</p>
+
+            <div class="loader"></div>
+
         </div>
-
-        <h3>Login Berhasil</h3>
-        <p>Selamat datang kembali, Admin</p>
-
-        <div class="loader"></div>
 
     </div>
 
-</div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        const siteName = "<?= htmlspecialchars($site_name, ENT_QUOTES, 'UTF-8') ?>";
 
-<script>
-function login() {
+        $('#btnLogin').click(function () {
+            login();
+        });
 
-    let email = $('#email').val();
-    let password = $('#password').val();
+        function login() {
 
-    $('#msg').text('');
+            console.log('LOGIN DIKLIK');
 
-    $.ajax({
-        url: "<?= base_url('api/login') ?>",
-        type: "POST",
-        data: { email, password },
+            let email = $('#email').val().trim();
+            let password = $('#password').val();
 
-        success: function(res) {
+            $('#msg').text('');
 
-            if(res.status){
+            if (email == '' || password == '') {
 
-                // show success animation
-                $('#successOverlay').removeClass('d-none');
-                $('.center').css({
-                    transform: 'scale(0.95)',
-                    opacity: '0.3'
-                });
+                $('#msg').text('Email dan password wajib diisi');
+                return;
 
-                setTimeout(function() {
-                    sessionStorage.setItem('token', res.token);
-                    window.location.href = "<?= base_url('admin') ?>";
-                }, 1800);
-
-            } else {
-                $('#msg').text(res.message);
             }
 
-        },
+            $('#btnText').addClass('d-none');
+            $('#btnLoading').removeClass('d-none');
 
-        error: function() {
-            $('#msg').text('Terjadi kesalahan server');
+            $.ajax({
+
+                url: "<?= base_url('api/login') ?>",
+                type: "POST",
+                dataType: "json",
+
+                data: {
+                    email: email,
+                    password: password
+                },
+
+                success: function (res) {
+
+                    console.log(res);
+
+                    $('#btnLoading').addClass('d-none');
+                    $('#btnText').removeClass('d-none');
+
+                    if (!res.success) {
+
+                        $('#msg').text(res.message);
+                        return;
+
+                    }
+
+                    if (res.data.role != 'admin') {
+
+                        $('#msg').text('Akses hanya untuk admin');
+                        return;
+
+                    }
+
+                    $.ajax({
+
+                        url: "<?= base_url('admin/login/store') ?>",
+
+                        type: "POST",
+
+                        data: {
+                            id: res.data.id,
+                            name: res.data.name,
+                            email: res.data.email,
+                            role: res.data.role
+                        },
+
+                        success: function () {
+
+                            $('#successWelcomeText').text('Selamat datang kembali, ' + res.data.name);
+
+                            $('#successOverlay').removeClass('d-none');
+
+                            setTimeout(function () {
+
+                                window.location.href =
+                                    "<?= base_url('admin/dashboard') ?>";
+
+                            }, 1500);
+
+                        }
+
+                    });
+
+                },
+
+                error: function (xhr) {
+
+                    $('#btnLoading').addClass('d-none');
+                    $('#btnText').removeClass('d-none');
+
+                    console.log(xhr);
+
+                    $('#msg').text('Server tidak dapat dihubungi');
+
+                }
+
+            });
+
         }
 
-    });
+        $('#password').keypress(function (e) {
 
-}
-</script>
+            if (e.which == 13) {
+
+                login();
+
+            }
+
+        });
+
+    </script>
 
 </body>
 

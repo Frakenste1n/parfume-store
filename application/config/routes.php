@@ -54,55 +54,76 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //api
-$route['api/test'] = 'api/test';
 $route['api/login']['POST'] = 'api/auth/login';
+$route['api/register']['POST'] = 'api/auth/register';
 
-$route['api/users']['GET']    = 'api/users/index';
-$route['api/users/(:num)']['GET'] = 'api/users/detail/$1';
-$route['api/users']['POST']   = 'api/users/index';
-$route['api/users/(:num)']['PUT']    = 'api/users/index/$1';
+$route['api/users']['GET'] = 'api/users/index';
+$route['api/users']['POST'] = 'api/users/index';
+$route['api/users/(:num)']['GET'] = 'api/users/index/$1';
+$route['api/users/(:num)']['PUT'] = 'api/users/index/$1';
 $route['api/users/(:num)']['DELETE'] = 'api/users/index/$1';
 
-$route['api/parfumes']['GET'] = 'api/parfumes/index';
-$route['api/parfumes']['POST'] = 'api/parfumes/index';
-$route['api/parfumes/(:num)']['GET'] = 'api/parfumes/detail/$1';
-$route['api/parfumes/(:num)']['PUT'] = 'api/parfumes/index/$1';
-$route['api/parfumes/(:num)']['DELETE'] = 'api/parfumes/index/$1';
+$route['api/brands']['GET'] = 'api/brands/index';
+$route['api/brands']['POST'] = 'api/brands/store';
+$route['api/brands/(:num)']['GET'] = 'api/brands/show/$1';
+$route['api/brands/(:num)']['PUT'] = 'api/brands/update/$1';
+$route['api/brands/(:num)']['DELETE'] = 'api/brands/delete/$1';
 
 $route['api/categories']['GET'] = 'api/categories/index';
-$route['api/categories/(:num)']['GET'] = 'api/categories/detail/$1';
-$route['api/categories']['POST'] = 'api/categories/index';
-$route['api/categories/(:num)']['PUT'] = 'api/categories/index/$1';
-$route['api/categories/(:num)']['DELETE'] = 'api/categories/index/$1';
+$route['api/categories']['POST'] = 'api/categories/store';
+$route['api/categories/(:num)']['GET'] = 'api/categories/show/$1';
+$route['api/categories/(:num)']['PUT'] = 'api/categories/update/$1';
+$route['api/categories/(:num)']['DELETE'] = 'api/categories/delete/$1';
 
-$route['api/orders']['POST'] = 'api/orders/index';
-$route['api/orders']['GET'] = 'api/orders/index';
-$route['api/orders']['POST'] = 'api/orders/index';
-$route['api/orders/(:num)']['DELETE'] = 'api/orders/index/$1';
-$route['api/orders/detail/(:num)']['GET'] = 'api/orders/detail/$1';
-$route['api/orders/status/(:num)']['PUT'] = 'api/orders/status/$1';
+$route['api/products']['GET'] = 'api/products/index';
+$route['api/products']['POST'] = 'api/products/store';
+$route['api/products/(:num)']['GET'] = 'api/products/show/$1';
+$route['api/products/(:num)']['PUT'] = 'api/products/update/$1';
+$route['api/products/(:num)']['DELETE'] = 'api/products/delete/$1';
+
+$route['api/product-images']['POST'] = 'api/product_images/store';
+$route['api/product-images/(:num)']['DELETE'] = 'api/product_images/delete/$1';
+
+$route['api/banners']['GET'] = 'api/banners/index';
+$route['api/banners']['POST'] = 'api/banners/store';
+$route['api/banners/(:num)']['GET'] = 'api/banners/show/$1';
+$route['api/banners/(:num)']['PUT'] = 'api/banners/update/$1';
+$route['api/banners/(:num)']['POST'] = 'api/banners/update/$1';
+$route['api/banners/(:num)']['DELETE'] = 'api/banners/delete/$1';
 
 $route['api/settings']['GET'] = 'api/settings/index';
-$route['api/settings']['POST'] = 'api/settings/index';
+$route['api/settings']['PUT'] = 'api/settings/update';
+$route['api/settings']['POST'] = 'api/settings/update';
 
-$route['api/brands']['GET'] = 'api/brands/index';
-$route['api/brands']['POST'] = 'api/brands/index';
-$route['api/brands/(:num)']['GET'] = 'api/brands/show/$1';
-$route['api/brands/update/(:num)']['POST'] = 'api/brands/update/$1';
-$route['api/brands/delete/(:num)']['POST']
-    = 'api/brands/delete/$1';
-$route['api/brands/dropdown']['GET'] = 'api/brands/dropdown';
-$route['api/brands/featured']['GET'] = 'api/brands/featured';
+$route['api/payment-methods']['GET'] = 'api/payment_methods/index';
+$route['api/payment-methods']['POST'] = 'api/payment_methods/store';
+$route['api/payment-methods/(:num)']['GET'] = 'api/payment_methods/show/$1';
+$route['api/payment-methods/(:num)']['PUT'] = 'api/payment_methods/update/$1';
+$route['api/payment-methods/(:num)']['POST'] = 'api/payment_methods/update/$1';
+$route['api/payment-methods/(:num)']['DELETE'] = 'api/payment_methods/delete/$1';
 
-$route['api/payments']['GET'] = 'api/payments/index';
-$route['api/payments/(:num)']['GET'] = 'api/payments/detail/$1';
-$route['api/payments']['POST'] = 'api/payments/index';
-$route['api/payments/(:num)']['PUT'] = 'api/payments/index/$1';
-$route['api/payments/(:num)']['DELETE'] = 'api/payments/index/$1';
+$route['api/cart']['GET'] = 'api/carts/index';
+$route['api/cart']['POST'] = 'api/carts/store';
+
+$route['api/orders']['GET'] = 'api/orders/index';
+$route['api/orders']['POST'] = 'api/orders/store';
+$route['api/orders/(:num)']['GET'] = 'api/orders/show/$1';
+$route['api/orders/(:num)']['PUT'] = 'api/orders/update/$1';
+$route['api/orders/(:num)']['DELETE'] = 'api/orders/delete/$1';
+
+$route['api/dashboard']['GET'] = 'api/dashboard/index';
 
 //admin
-$route['admin/login'] = 'admin/auth';
-$route['admin/dashboard'] = 'admin/dashboard';
-$route['users/users'] = 'admin/users';
-$route['admin/brands'] = 'admin/brands';
-$route['admin/parfumes'] = 'admin/parfumes';
+$route['admin/login']='admin/login/index';
+$route['admin/login/store']='admin/login/store';
+$route['admin/logout']='admin/login/logout';
+
+$route['admin/dashboard'] = 'admin/dashboard/index';
+$route['admin/users'] = 'admin/users/index';
+$route['admin/brands'] = 'admin/brands/index';
+$route['admin/categories'] = 'admin/categories/index';
+$route['admin/parfume'] = 'admin/parfume/index';
+$route['admin/banners'] = 'admin/banners/index';
+$route['admin/payments'] = 'admin/payments/index';
+$route['admin/orders'] = 'admin/orders/index';
+$route['admin/setting'] = 'admin/setting/index';

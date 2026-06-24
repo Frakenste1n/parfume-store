@@ -1,22 +1,31 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Category extends CI_Model {
+class Payment_method_model extends CI_Model
+{
+    private $table = 'payment_methods';
 
-    private $table = 'categorie';
-
-    public function getAll()
+    public function get_all()
     {
         return $this->db
-    ->order_by('id', 'DESC')
-    ->get($this->table)
-    ->result();
+            ->where('is_active', 1)
+            ->get($this->table)
+            ->result();
     }
 
-    public function getById($id)
+    public function get_all_admin()
     {
         return $this->db
-            ->get_where($this->table, ['id' => $id])
+            ->order_by('id', 'DESC')
+            ->get($this->table)
+            ->result();
+    }
+
+    public function find($id)
+    {
+        return $this->db
+            ->where('id', $id)
+            ->get($this->table)
             ->row();
     }
 

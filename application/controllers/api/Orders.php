@@ -1,293 +1,100 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require APPPATH . 'libraries/REST_Controller.php';
-require APPPATH . 'libraries/Format.php';
+require APPPATH.'core/Base_api.php';
 
-use chriskacerguis\RestServer\RestController;
-
-class Orders extends RestController {
-
+class Orders extends Base_api
+{
     public function __construct()
     {
         parent::__construct();
 
-        $this->load->model('Order');
+        $this->load->model('Order_model');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | GET ALL ORDERS
-    |--------------------------------------------------------------------------
-    */
 
     public function index_get()
     {
-        $orders = $this->Order->getAll();
-
-        $this->response([
-            'status' => true,
-            'data'   => $orders
-        ], 200);
+        return $this->success_response(
+            'Data order berhasil diambil',
+            $this->Order_model->get_orders()
+        );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | CREATE ORDER
-    |--------------------------------------------------------------------------
-    */
-
-    public function index_post()
+    public function show_get($id)
     {
-        $user_id = $this->post('user_id');
-        $items   = $this->post('items');
+        $order = $this->Order_model->get_order($id);
 
-        if (!$user_id) {
-
-            $this->response([
-                'status' => false,
-                'message' => 'User wajib diisi'
-            ], 400);
-
-            return;
+        if (!$order)
+        {
+            return $this->error_response('Order tidak ditemukan');
         }
 
-        if (!$items || count($items) == 0) {
+        $order->items = $this->Order_model->get_order_items($id);
 
-            $this->response([
-                'status' => false,
-                'message' => 'Items wajib diisi'
-            ], 400);
-
-            return;
-        }
-
-        $total_price = 0;
-
-        $order_items = [];
-
-        /*
-        |--------------------------------------------------------------------------
-        | LOOP ITEMS
-        |--------------------------------------------------------------------------
-        */
-
-        foreach ($items as $item) {
-
-            $query = $this->db->get_where('parfume', [
-                'id' => $item['parfume_id']
-            ]);
-
-            $parfume = $query->row();
-
-            if (!$parfume) {
-
-                $this->response([
-                    'status' => false,
-                    'message' => 'Parfume tidak ditemukan'
-                ], 404);
-
-                return;
-            }
-
-            /*
-            |--------------------------------------------------------------------------
-            | CEK STOCK
-            |--------------------------------------------------------------------------
-            */
-
-            if ($parfume->stock < $item['qty']) {
-
-                $this->response([
-                    'status' => false,
-                    'message' => 'Stock tidak mencukupi'
-                ], 400);
-
-                return;
-            }
-
-            $subtotal = $parfume->price * $item['qty'];
-
-            $total_price += $subtotal;
-
-            $order_items[] = [
-                'parfume_id' => $parfume->id,
-                'qty'        => $item['qty'],
-                'subtotal'   => $subtotal
-            ];
-
-            /*
-            |--------------------------------------------------------------------------
-            | UPDATE STOCK
-            |--------------------------------------------------------------------------
-            */
-
-            $new_stock = $parfume->stock - $item['qty'];
-
-            $this->db->where('id', $parfume->id);
-
-            $this->db->update('parfume', [
-                'stock' => $new_stock
-            ]);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | CREATE ORDER
-        |--------------------------------------------------------------------------
-        */
-
-        $order_id = $this->Order->createOrder([
-            'user_id'     => $user_id,
-            'total_price' => $total_price,
-            'status'      => 'pending'
-        ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | CREATE ORDER ITEMS
-        |--------------------------------------------------------------------------
-        */
-
-        foreach ($order_items as $item) {
-
-            $item['order_id'] = $order_id;
-
-            $this->Order->createOrderItem($item);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | RESPONSE
-        |--------------------------------------------------------------------------
-        */
-
-        $this->response([
-            'status'      => true,
-            'message'     => 'Order berhasil dibuat',
-            'order_id'    => $order_id,
-            'total_price' => $total_price
-        ], 201);
+        return $this->success_response(
+            'Detail order',
+            $order
+        );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | GET DETAIL ORDER
-    |--------------------------------------------------------------------------
-    */
-
-    public function detail_get($id = null)
+    public function store_post()
     {
-        if (!$id) {
+        $order_id = $this->Order_model->checkout(
+            $this->post('user_id'),
+            $this->post('payment_method_id')
+        );
 
-            $this->response([
-                'status' => false,
-                'message' => 'ID wajib diisi'
-            ], 400);
-
-            return;
+        if(!$order_id)
+        {
+            return $this->error_response(
+                'Checkout gagal'
+            );
         }
 
-        $order = $this->Order->getDetail($id);
-
-        if (!$order) {
-
-            $this->response([
-                'status' => false,
-                'message' => 'Order tidak ditemukan'
-            ], 404);
-
-            return;
-        }
-
-        $items = $this->Order->getItems($id);
-
-        $order->items = $items;
-
-        $this->response([
-            'status' => true,
-            'data'   => $order
-        ], 200);
+        return $this->success_response(
+            'Checkout berhasil',
+            [
+                'order_id'=>$order_id
+            ]
+        );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE STATUS ORDER
-    |--------------------------------------------------------------------------
-    */
-
-    public function status_put($id = null)
+    public function update_put($id)
     {
-        if (!$id) {
+        $status = $this->put('payment_status');
 
-            $this->response([
-                'status' => false,
-                'message' => 'ID wajib diisi'
-            ], 400);
-
-            return;
+        if (!$status)
+        {
+            return $this->error_response('Status pembayaran wajib diisi');
         }
 
-        $status = $this->put('status');
-
-        $allowed_status = [
-            'pending',
-            'paid',
-            'shipped',
-            'completed'
-        ];
-
-        if (!in_array($status, $allowed_status)) {
-
-            $this->response([
-                'status' => false,
-                'message' => 'Status tidak valid'
-            ], 400);
-
-            return;
+        if (!$this->Order_model->get_order($id))
+        {
+            return $this->error_response('Order tidak ditemukan');
         }
 
-        $this->db->where('id', $id);
+        $this->Order_model->update_payment_status($id, $status);
 
-        $this->db->update('orders', [
-            'status' => $status
-        ]);
-
-        $this->response([
-            'status' => true,
-            'message' => 'Status order berhasil diupdate'
-        ], 200);
+        return $this->success_response(
+            'Status order berhasil diupdate',
+            $this->Order_model->get_order($id)
+        );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | DELETE ORDER
-    |--------------------------------------------------------------------------
-    */
-
-    public function index_delete($id = null)
+    public function delete_delete($id)
     {
-        if (!$id) {
-
-            $this->response([
-                'status' => false,
-                'message' => 'ID wajib diisi'
-            ], 400);
-
-            return;
+        if (!$this->Order_model->get_order($id))
+        {
+            return $this->error_response('Order tidak ditemukan');
         }
 
-        $this->db->delete('order_items', [
-            'order_id' => $id
-        ]);
+        if (!$this->Order_model->delete_order($id))
+        {
+            return $this->error_response('Gagal menghapus order');
+        }
 
-        $this->db->delete('orders', [
-            'id' => $id
-        ]);
-
-        $this->response([
-            'status' => true,
-            'message' => 'Order berhasil dihapus'
-        ], 200);
+        return $this->success_response(
+            'Order berhasil dihapus'
+        );
     }
 }

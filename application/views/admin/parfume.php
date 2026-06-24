@@ -1,864 +1,247 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<div class="parfume-page">
 
-<div class="page-wrapper">
-
-    <!-- HEADER -->
     <div class="page-header">
-
-        <div>
-
-            <div class="page-badge">
-                <i class="bi bi-droplet"></i>
-                Admin Panel
-            </div>
-
-            <h1 class="page-title">
-                Parfume Management
-            </h1>
-
-            <p class="page-subtitle">
-                Manage perfumes, pricing, stock and brand relations
-            </p>
-
+        <div class="page-header-text">
+            <h2>Parfume Management</h2>
+            <p>Manage perfumes, pricing, stock, brand and category relations.</p>
         </div>
-
-        <button class="btn-primary-action" onclick="openCreateModal()">
-
+        <button type="button" class="btn-add-parfume" data-bs-toggle="modal" data-bs-target="#createParfumeModal">
             <i class="bi bi-plus-lg"></i>
-            New Parfume
-
+            <span>Add Parfume</span>
         </button>
-
     </div>
 
-    <!-- SEARCH -->
-    <div class="card ui-card mt-4">
-
-        <div class="card-body">
-
-            <div class="search-box">
-
-                <i class="bi bi-search"></i>
-
-                <input type="text" id="searchParfume" placeholder="Search parfume name, brand, price..."
-                    autocomplete="off">
-
+    <div class="row g-3 g-md-4 mb-4">
+        <div class="col-6 col-xl-3">
+            <div class="stats-card stat-total">
+                <div class="icon-box"><i class="bi bi-droplet"></i></div>
+                <div class="stats-card-body">
+                    <span>Total Products</span>
+                    <h3 id="totalProducts">0</h3>
+                </div>
             </div>
-
         </div>
-
-    </div>
-
-    <!-- TABLE -->
-    <div class="card ui-card mt-4">
-
-        <div class="card-body p-0">
-
-            <div class="table-responsive">
-
-                <table class="table ui-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Parfume</th>
-                            <th>Brand</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th width="120">Action</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="parfumeTableBody"></tbody>
-
-                </table>
-
+        <div class="col-6 col-xl-3">
+            <div class="stats-card stat-active">
+                <div class="icon-box"><i class="bi bi-check-circle"></i></div>
+                <div class="stats-card-body">
+                    <span>Active</span>
+                    <h3 id="totalActive">0</h3>
+                </div>
             </div>
-
         </div>
-
+        <div class="col-6 col-xl-3">
+            <div class="stats-card stat-featured">
+                <div class="icon-box"><i class="bi bi-star"></i></div>
+                <div class="stats-card-body">
+                    <span>Featured</span>
+                    <h3 id="totalFeatured">0</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="stats-card stat-lowstock">
+                <div class="icon-box"><i class="bi bi-exclamation-triangle"></i></div>
+                <div class="stats-card-body">
+                    <span>Low Stock</span>
+                    <h3 id="totalLowStock">0</h3>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <div class="content-card parfume-table-card">
+        <div class="table-card-header">
+            <div class="table-card-title">
+                <div class="table-card-icon"><i class="bi bi-box-seam"></i></div>
+                <div>
+                    <h5>All Parfumes</h5>
+                    <p>Daftar lengkap produk parfum</p>
+                </div>
+            </div>
+            <span class="table-count-badge" id="tableProductCount">0 products</span>
+        </div>
+        <div class="parfume-table-wrap">
+            <table class="table parfume-table align-middle w-100" id="parfumeTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Featured</th>
+                        <th>Status</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<div class="modal fade" id="parfumeModal">
-
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-
-        <div class="modal-content ui-modal">
-
-            <form id="parfumeForm">
-
-                <div class="modal-header">
-
-                    <div>
-
-                        <h5 id="modalTitle">Create Parfume</h5>
-
-                        <small class="text-muted">
-                            Fill parfume information
-                        </small>
-
-                    </div>
-
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
-
-                </div>
-
-                <div class="modal-body">
-
-                    <input type="hidden" id="parfumeId">
-
+<!-- CREATE MODAL -->
+<div class="modal fade" id="createParfumeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+        <div class="modal-content border-0 rounded-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Parfume</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createParfumeForm">
                     <div class="row g-3">
-
                         <div class="col-md-6">
-
-                            <label>Name</label>
-
-                            <input type="text" id="name" class="form-control ui-input" placeholder="Dior Sauvage">
-
+                            <label class="form-label">Product Name</label>
+                            <input type="text" id="create_name" name="name" class="form-control" required>
                         </div>
-
                         <div class="col-md-6">
-
-                            <label>Brand ID</label>
-
-                            <select id="brand_id" class="form-control ui-input"></select>
+                            <label class="form-label">Slug</label>
+                            <input type="text" id="create_slug" name="slug" class="form-control" required>
                         </div>
-
+                        <div class="col-md-4">
+                            <label class="form-label">SKU</label>
+                            <input type="text" name="sku" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Brand</label>
+                            <select name="brand_id" id="create_brand_id" class="form-select" required></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Category</label>
+                            <select name="category_id" id="create_category_id" class="form-select" required></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Price (Rp)</label>
+                            <input type="number" name="price" class="form-control" min="0" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Stock</label>
+                            <input type="number" name="stock" class="form-control" min="0" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Featured</label>
+                            <select name="is_featured" class="form-select">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
                         <div class="col-md-6">
-
-                            <label>Price</label>
-
-                            <input type="number" id="price" class="form-control ui-input" placeholder="250000">
-
+                            <label class="form-label">Status</label>
+                            <select name="is_active" class="form-select">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
                         </div>
-
-                        <div class="col-md-6">
-
-                            <label>Stock</label>
-
-                            <input type="number" id="stock" class="form-control ui-input" placeholder="10">
-
+                        <div class="col-12">
+                            <label class="form-label">Short Description</label>
+                            <textarea name="short_description" rows="2" class="form-control"></textarea>
                         </div>
-
+                        <div class="col-12">
+                            <label class="form-label">Description</label>
+                            <textarea name="description" rows="4" class="form-control"></textarea>
+                        </div>
                     </div>
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button class="btn-soft" type="button" data-bs-dismiss="modal">
-                        Cancel
-                    </button>
-
-                    <button class="btn-primary-action" type="submit">
-                        <i class="bi bi-check2"></i>
-                        Save
-                    </button>
-
-                </div>
-
-            </form>
-
+                </form>
+            </div>
+            <div class="modal-footer flex-column flex-sm-row gap-2">
+                <button type="button" class="btn btn-light w-100 w-sm-auto" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary w-100 w-sm-auto" id="btnCreateParfume">Save Parfume</button>
+            </div>
         </div>
-
     </div>
-
 </div>
 
-<style>
-
-/* =========================
-   ROOT (CONSISTENT SYSTEM)
-========================= */
-
-:root{
-    --bg:#f8fafc;
-    --card:#ffffff;
-    --text:#0f172a;
-    --muted:#64748b;
-    --border:#e2e8f0;
-}
-
-/* =========================
-   PAGE WRAPPER
-========================= */
-
-.page-wrapper{
-    animation:fadeIn .25s ease;
-}
-
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(10px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-/* =========================
-   HEADER (FILAMENT STYLE)
-========================= */
-
-.page-header{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:20px;
-    flex-wrap:wrap;
-
-    padding:28px;
-
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-
-}
-
-.page-badge{
-
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-
-    font-size:12px;
-    font-weight:600;
-
-    color:var(--muted);
-
-    margin-bottom:10px;
-
-}
-
-.page-title{
-
-    font-size:26px;
-    font-weight:700;
-
-    color:var(--text);
-
-    margin:0;
-
-}
-
-.page-subtitle{
-
-    margin-top:6px;
-
-    color:var(--muted);
-
-    font-size:14px;
-
-}
-
-/* =========================
-   PRIMARY BUTTON
-========================= */
-
-.btn-primary-action{
-
-    background:#111827;
-    color:#fff;
-
-    border:none;
-
-    padding:11px 16px;
-
-    border-radius:12px;
-
-    font-weight:600;
-
-    display:flex;
-    align-items:center;
-    gap:8px;
-
-    transition:.2s ease;
-
-}
-
-.btn-primary-action:hover{
-
-    transform:translateY(-2px);
-    background:#1f2937;
-
-}
-
-/* =========================
-   CARD SYSTEM
-========================= */
-
-.ui-card{
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    background:var(--card);
-
-    overflow:hidden;
-
-}
-
-/* =========================
-   SEARCH BOX (CLEAN FILAMENT)
-========================= */
-
-.search-box{
-
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    padding:12px 14px;
-
-    border:1px solid var(--border);
-
-    border-radius:14px;
-
-    background:#fff;
-
-}
-
-.search-box i{
-    color:var(--muted);
-}
-
-.search-box input{
-
-    border:none;
-    outline:none;
-
-    width:100%;
-
-    font-size:14px;
-
-}
-
-/* =========================
-   TABLE
-========================= */
-
-.ui-table thead th{
-
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.04em;
-
-    color:var(--muted);
-
-    padding:16px;
-
-    border-bottom:1px solid var(--border);
-
-    background:#fafafa;
-
-}
-
-.ui-table tbody td{
-
-    padding:18px 16px;
-
-    border-bottom:1px solid #f1f5f9;
-
-    vertical-align:middle;
-
-}
-
-.ui-table tbody tr:hover{
-
-    background:#f8fafc;
-
-}
-
-/* =========================
-   PARFUME CELL
-========================= */
-
-.parfume-name{
-
-    font-weight:600;
-
-    color:var(--text);
-
-    font-size:14px;
-
-}
-
-.parfume-meta{
-
-    font-size:12px;
-
-    color:var(--muted);
-
-    margin-top:3px;
-
-}
-
-/* =========================
-   BRAND BADGE
-========================= */
-
-.brand-badge{
-
-    display:inline-flex;
-
-    padding:6px 10px;
-
-    border-radius:999px;
-
-    font-size:12px;
-
-    font-weight:600;
-
-    background:#f1f5f9;
-
-    color:#334155;
-
-}
-
-/* =========================
-   PRICE STYLE
-========================= */
-
-.price-tag{
-
-    font-weight:700;
-
-    color:#0f172a;
-
-}
-
-/* =========================
-   STOCK BADGE
-========================= */
-
-.stock-badge{
-
-    display:inline-flex;
-
-    padding:6px 10px;
-
-    border-radius:999px;
-
-    font-size:12px;
-
-    font-weight:600;
-
-}
-
-.stock-low{
-    background:#fee2e2;
-    color:#991b1b;
-}
-
-.stock-good{
-    background:#dcfce7;
-    color:#166534;
-}
-
-/* =========================
-   ACTION BUTTONS
-========================= */
-
-.action-group{
-    display:flex;
-    gap:8px;
-}
-
-.action-btn{
-
-    width:36px;
-    height:36px;
-
-    border:none;
-
-    border-radius:10px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    transition:.2s ease;
-
-    color:white;
-
-}
-
-.action-btn:hover{
-    transform:translateY(-2px);
-}
-
-.edit-btn{
-    background:#f59e0b;
-}
-
-.delete-btn{
-    background:#ef4444;
-}
-
-/* =========================
-   MODAL
-========================= */
-
-.ui-modal{
-
-    border:none;
-
-    border-radius:18px;
-
-    overflow:hidden;
-
-}
-
-.modal-header{
-
-    border-bottom:1px solid #f1f5f9;
-
-    padding:18px 22px;
-
-}
-
-.modal-body{
-
-    padding:22px;
-
-}
-
-.modal-footer{
-
-    border-top:1px solid #f1f5f9;
-
-    padding:18px 22px;
-
-}
-
-/* =========================
-   FORM
-========================= */
-
-.btn-soft{
-
-    border:1px solid #e2e8f0;
-    background:#f8fafc;
-    color:#334155;
-    padding:10px 16px;
-    border-radius:12px;
-    font-weight:600;
-    transition:.2s ease;
-
-}
-
-.btn-soft:hover{
-    background:#eef2f7;
-    transform:translateY(-1px);
-    border-color:#cbd5e1;
-
-}
-
-.form-control.ui-input{
-
-    border-radius:12px;
-
-    border:1px solid var(--border);
-
-    padding:10px 12px;
-
-    font-size:14px;
-
-}
-
-.form-control.ui-input:focus{
-
-    border-color:#111827;
-
-    box-shadow:0 0 0 .15rem rgba(17,24,39,.1);
-
-}
-
-label{
-
-    font-size:13px;
-
-    color:#334155;
-
-    font-weight:600;
-
-    margin-bottom:6px;
-
-}
-
-/* =========================
-   EMPTY STATE
-========================= */
-
-.empty-state{
-
-    text-align:center;
-
-    padding:50px 20px;
-
-    color:var(--muted);
-
-}
-
-.empty-state i{
-
-    font-size:44px;
-
-    margin-bottom:10px;
-
-}
-
-/* =========================
-   LOADING
-========================= */
-
-.loading-state{
-
-    text-align:center;
-
-    padding:40px;
-
-    color:var(--muted);
-
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:768px){
-
-    .page-header{
-        flex-direction:column;
-        align-items:stretch;
-    }
-
-    .btn-primary-action{
-        width:100%;
-        justify-content:center;
-    }
-
-    .ui-table thead{
-        display:none;
-    }
-
-    .ui-table tbody td{
-        display:block;
-        width:100%;
-    }
-
-}
-
-</style>
-
-<script>
-
-const API = '<?= base_url("api/parfumes") ?>';
-
-let modal;
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    modal = new bootstrap.Modal(
-        document.getElementById('parfumeModal')
-    );
-
-    load();
-    search();
-    submit();
-    loadBrandsOptions();
-
-});
-
-async function load(){
-
-    const tbody = document.getElementById('parfumeTableBody');
-
-    const res = await fetch(API);
-    const json = await res.json();
-
-    const data = json.data || [];
-
-    if(data.length === 0){
-        tbody.innerHTML = `
-        <tr>
-            <td colspan="5" class="text-center text-muted p-4">
-                No Parfume Found
-            </td>
-        </tr>`;
-        return;
-    }
-
-    let html = '';
-
-    data.forEach(p => {
-
-        html += `
-        <tr>
-
-            <td>
-                <div class="fw-semibold">${p.name}</div>
-                <div class="text-muted small">ID #${p.id}</div>
-            </td>
-
-            <td>
-                ${p.brand_id ?? '-'}
-            </td>
-
-            <td>
-                Rp ${Number(p.price).toLocaleString()}
-            </td>
-
-            <td>
-                ${p.stock}
-            </td>
-
-            <td>
-
-                <div class="d-flex gap-2">
-
-                    <button class="action-btn edit-btn" onclick="edit(${p.id})">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-
-                    <button class="action-btn delete-btn" onclick="remove(${p.id})">
-                        <i class="bi bi-trash"></i>
-                    </button>
-
+<!-- EDIT MODAL -->
+<div class="modal fade" id="editParfumeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+        <div class="modal-content border-0 rounded-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Parfume</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editParfumeForm">
+                    <input type="hidden" name="id" id="edit_id">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Product Name</label>
+                            <input type="text" id="edit_name" name="name" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Slug</label>
+                            <input type="text" id="edit_slug" name="slug" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">SKU</label>
+                            <input type="text" id="edit_sku" name="sku" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Brand</label>
+                            <select name="brand_id" id="edit_brand_id" class="form-select" required></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Category</label>
+                            <select name="category_id" id="edit_category_id" class="form-select" required></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Price (Rp)</label>
+                            <input type="number" id="edit_price" name="price" class="form-control" min="0" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Stock</label>
+                            <input type="number" id="edit_stock" name="stock" class="form-control" min="0" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Featured</label>
+                            <select id="edit_is_featured" name="is_featured" class="form-select">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Status</label>
+                            <select id="edit_is_active" name="is_active" class="form-select">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Short Description</label>
+                            <textarea id="edit_short_description" name="short_description" rows="2" class="form-control"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Description</label>
+                            <textarea id="edit_description" name="description" rows="4" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+
+                <div class="product-images-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                        <h6 class="mb-0 fw-bold">Product Images</h6>
+                        <label class="btn btn-sm btn-outline-primary mb-0">
+                            <i class="bi bi-upload"></i> Upload Image
+                            <input type="file" id="productImageInput" class="d-none" accept="image/jpeg,image/png,image/webp">
+                        </label>
+                    </div>
+                    <div id="productImagesList" class="product-images-grid"></div>
                 </div>
+            </div>
+            <div class="modal-footer flex-column flex-sm-row gap-2">
+                <button type="button" class="btn btn-light w-100 w-sm-auto" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary w-100 w-sm-auto" id="btnUpdateParfume">Update Parfume</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-            </td>
-
-        </tr>`;
-    });
-
-    tbody.innerHTML = html;
-
-}
-
-async function loadBrandsOptions(){
-
-    const res = await fetch('<?= base_url("api/brands") ?>');
-    const json = await res.json();
-
-    const select = document.getElementById('brand_id');
-
-    select.innerHTML = `<option value="">Select Brand</option>`;
-
-    json.data.forEach(b => {
-        select.innerHTML += `
-            <option value="${b.id}">
-                ${b.name}
-            </option>
-        `;
-    });
-}
-
-function openCreateModal(){
-
-    document.getElementById('parfumeForm').reset();
-    document.getElementById('parfumeId').value = '';
-    document.getElementById('modalTitle').innerText = 'Create Parfume';
-
-    modal.show();
-
-}
-
-function submit(){
-
-    document.getElementById('parfumeForm').addEventListener('submit', async (e) => {
-
-        e.preventDefault();
-
-        const id = document.getElementById('parfumeId').value;
-
-        const payload = new URLSearchParams({
-            name: document.getElementById('name').value,
-            brand_id: document.getElementById('brand_id').value,
-            price: document.getElementById('price').value,
-            stock: document.getElementById('stock').value
-        });
-
-        const url = id ? `${API}/${id}` : API;
-        const method = id ? 'PUT' : 'POST';
-
-        const res = await fetch(url, {
-            method,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: payload
-        });
-
-        const json = await res.json();
-
-        if(json.status){
-            modal.hide();
-            load();
-        }
-
-    });
-
-}
-
-async function edit(id){
-
-    const res = await fetch(`${API}/${id}`);
-    const json = await res.json();
-
-    const p = json.data;
-
-    document.getElementById('parfumeId').value = p.id;
-    document.getElementById('name').value = p.name;
-    document.getElementById('brand_id').value = p.brand_id;
-    document.getElementById('price').value = p.price;
-    document.getElementById('stock').value = p.stock;
-
-    document.getElementById('modalTitle').innerText = 'Edit Parfume';
-
-    modal.show();
-
-}
-
-async function remove(id){
-
-    const ok = await Swal.fire({
-        title:'Delete Parfume?',
-        icon:'warning',
-        showCancelButton:true
-    });
-
-    if(!ok.isConfirmed) return;
-
-    await fetch(`${API}/${id}`, {
-        method:'DELETE'
-    });
-
-    load();
-
-}
-
-function search(){
-
-    document.getElementById('searchParfume').addEventListener('keyup', function(){
-
-        const val = this.value.toLowerCase();
-
-        document.querySelectorAll('#parfumeTableBody tr').forEach(row => {
-            row.style.display = row.innerText.toLowerCase().includes(val) ? '' : 'none';
-        });
-
-    });
-
-}
-
-</script>
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+<link rel="stylesheet" href="<?= base_url('assets/css/parfume.css') ?>">
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+<script src="<?= base_url('assets/js/parfume.js') ?>"></script>

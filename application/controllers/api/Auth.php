@@ -1,19 +1,37 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require APPPATH . 'libraries/REST_Controller.php';
-require APPPATH . 'libraries/Format.php';
-
-use chriskacerguis\RestServer\RestController;
-
-class Auth extends RestController
+require APPPATH . 'core/Base_api.php';
+class Auth extends Base_api
 {
-
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('Auth_model');
+    }
 
-        $this->load->model('Admin');
+    public function register_post()
+    {
+        $email = $this->post('email');
+
+        $user = $this->Auth_model->find_by_email($email);
+
+        if ($user) {
+            return $this->error_response('Email sudah digunakan');
+        }
+
+        $data = [
+            'name' => $this->post('name'),
+            'email' => $email,
+            'password' => password_hash($this->post('password'), PASSWORD_BCRYPT),
+            'phone' => $this->post('phone'),
+            'address' => $this->post('address'),
+            'role' => 'customer'
+        ];
+
+        $this->Auth_model->register($data);
+
+        return $this->success_response('Register berhasil');
     }
 
     public function login_post()
@@ -21,59 +39,21 @@ class Auth extends RestController
         $email = $this->post('email');
         $password = $this->post('password');
 
-        $admin = $this->Admin->getByEmail($email);
+        $user = $this->Auth_model->find_by_email($email);
 
-        if (!$admin) {
-
-            $this->response([
-                'status' => false,
-                'message' => 'Email tidak ditemukan'
-            ], 404);
-
-            return;
+        if (!$user) {
+            return $this->error_response('Email tidak ditemukan');
         }
 
-        if (!password_verify($password, $admin->password)) {
-
-            $this->response([
-                'status' => false,
-                'message' => 'Password salah'
-            ], 401);
-
-            return;
+        if (!password_verify($password, $user->password)) {
+            return $this->error_response('Password salah');
         }
 
-        $token = bin2hex(random_bytes(32));
+        unset($user->password);
 
-        $this->Admin->updateToken(
-            $admin->id,
-            $token
+        return $this->success_response(
+            'Login berhasil',
+            $user
         );
-
-        $this->response([
-            'status' => true,
-            'message' => 'Login berhasil',
-            'token' => $token,
-            'admin' => [
-                'id' => $admin->id,
-                'name' => $admin->name,
-                'email' => $admin->email
-            ]
-        ], 200);
-    }
-
-    protected function check_token()
-    {
-        $token = $this->input->get_request_header('Authorization');
-
-        if (!$token) {
-            return false;
-        }
-
-        $token = str_replace('Bearer ', '', $token);
-
-        $admin = $this->Admin->getByToken($token);
-
-        return $admin ?: false;
     }
 }

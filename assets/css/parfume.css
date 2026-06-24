@@ -1,0 +1,861 @@
+/* ================= PAGE ================= */
+
+.parfume-page {
+    max-width: 100%;
+    animation: parfumeFadeIn .25s ease;
+}
+
+@keyframes parfumeFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ================= HEADER ================= */
+
+.parfume-page .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.parfume-page .page-header-text h2 {
+    font-size: clamp(1.5rem, 4vw, 2.125rem);
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #111827;
+    line-height: 1.2;
+}
+
+.parfume-page .page-header-text p {
+    color: #94a3b8;
+    margin: 0;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
+
+
+/* ================= ADD BUTTON ================= */
+
+.btn-add-parfume {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    min-height: 48px;
+    padding: 0 22px;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+    box-shadow: 0 12px 32px rgba(99, 102, 241, .22);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.btn-add-parfume:hover {
+    transform: translateY(-2px);
+    color: white;
+    box-shadow: 0 16px 40px rgba(99, 102, 241, .3);
+}
+
+
+/* ================= STATS ================= */
+
+.parfume-page .stats-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 22px;
+    color: white;
+    min-height: 110px;
+    box-shadow: 0 8px 32px rgba(15, 23, 42, .08);
+    transition: transform .25s ease;
+}
+
+.parfume-page .stats-card:hover {
+    transform: translateY(-3px);
+}
+
+.parfume-page .stats-card::before {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .12);
+    right: -35px;
+    top: -35px;
+}
+
+.parfume-page .stat-total {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+
+.parfume-page .stat-active {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+}
+
+.parfume-page .stat-inactive {
+    background: linear-gradient(135deg, #dc2626, #f87171);
+}
+
+.parfume-page .stat-featured {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+}
+
+.parfume-page .stat-lowstock {
+    background: linear-gradient(135deg, #dc2626, #f87171);
+}
+
+.parfume-page .icon-box {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.parfume-page .stats-card-body {
+    min-width: 0;
+}
+
+.parfume-page .stats-card span {
+    display: block;
+    opacity: .92;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.parfume-page .stats-card h3 {
+    font-size: clamp(1.375rem, 3vw, 2rem);
+    font-weight: 800;
+    margin: 4px 0 0;
+    line-height: 1.1;
+}
+
+
+/* ================= TABLE CARD ================= */
+
+.parfume-page .content-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(15, 23, 42, .06);
+    border: 1px solid #f1f5f9;
+}
+
+.parfume-table-card {
+    overflow: visible;
+}
+
+.parfume-page .table-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 22px 24px;
+    border-bottom: 1px solid #f1f5f9;
+    background: linear-gradient(180deg, #fafbff 0%, #ffffff 100%);
+}
+
+.parfume-page .table-card-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.parfume-page .table-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: #eef2ff;
+    color: #6366f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.parfume-page .table-card-title h5 {
+    margin: 0 0 2px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.parfume-page .table-card-title p {
+    margin: 0;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.parfume-page .table-count-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #4f46e5;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.parfume-table-wrap {
+    padding: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* ================= TABLE ================= */
+
+.parfume-table {
+    margin-bottom: 0;
+    width: 100% !important;
+}
+
+.parfume-table thead th {
+    border: none;
+    padding: 16px 18px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    background: #f8fafc;
+    white-space: nowrap;
+}
+
+.parfume-table thead th:first-child {
+    padding-left: 24px;
+}
+
+.parfume-table thead th:last-child {
+    padding-right: 24px;
+}
+
+.parfume-table tbody td {
+    border-color: #f1f5f9;
+    padding: 16px 18px;
+    color: #334155;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.parfume-table tbody td:first-child {
+    padding-left: 24px;
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.parfume-table tbody td:last-child {
+    padding-right: 24px;
+}
+
+.parfume-table tbody tr {
+    transition: background .2s ease;
+}
+
+.parfume-table tbody tr:hover {
+    background: #fafbff;
+}
+
+.parfume-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ================= CATEGORY CELL ================= */
+
+.product-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.product-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.product-info {
+    min-width: 0;
+}
+
+.product-name {
+    display: block;
+    font-weight: 600;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-meta {
+    display: block;
+    font-size: 12px;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cell-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 280px;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.cell-date {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+}
+
+
+/* ================= BADGE ================= */
+
+.status-active,
+.status-inactive {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-active {
+    background: #ecfdf5;
+    color: #16a34a;
+}
+
+.status-active::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+}
+
+.status-inactive {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.status-inactive::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ef4444;
+}
+
+
+/* ================= ACTION BUTTON ================= */
+
+.action-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.btn-action {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.btn-edit {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.btn-delete {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, .08);
+}
+
+
+/* ================= DATATABLE TOOLBAR ================= */
+
+.parfume-table-card .dataTables_wrapper {
+    padding: 0;
+}
+
+.parfume-dt-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 24px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.parfume-dt-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid #f1f5f9;
+    background: #fafbff;
+}
+
+.parfume-table-card .dataTables_length label,
+.parfume-table-card .dataTables_filter label {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.parfume-table-card .dataTables_filter input {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    min-height: 40px;
+    padding: 8px 14px !important;
+    font-size: 14px;
+    min-width: 180px;
+    box-shadow: none !important;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.parfume-table-card .dataTables_filter input:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .12) !important;
+    outline: none;
+}
+
+.parfume-table-card .dataTables_length select {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    min-height: 40px;
+    padding: 6px 32px 6px 12px !important;
+    font-size: 14px;
+    box-shadow: none !important;
+}
+
+.parfume-table-card .dataTables_info {
+    font-size: 13px;
+    color: #64748b;
+    padding: 0;
+}
+
+.parfume-table-card .dataTables_paginate {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.parfume-table-card .pagination {
+    margin: 0;
+    gap: 4px;
+}
+
+.parfume-table-card .page-link {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px !important;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    min-width: 36px;
+    text-align: center;
+    box-shadow: none;
+}
+
+.parfume-table-card .page-item.active .page-link {
+    background: #6366f1;
+    border-color: #6366f1;
+    color: white;
+}
+
+.parfume-table-card .page-link:hover {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    color: #4f46e5;
+}
+
+.parfume-table-card .dataTables_processing {
+    background: rgba(255, 255, 255, .92);
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    color: #6366f1;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 12px 20px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
+}
+
+
+/* ================= RESPONSIVE CHILD ROW ================= */
+
+.parfume-table-card table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control,
+.parfume-table-card table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control {
+    padding-left: 42px;
+}
+
+.parfume-table-card table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control::before,
+.parfume-table-card table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control::before {
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    background: #eef2ff;
+    color: #6366f1;
+    border: none;
+    box-shadow: none;
+    line-height: 16px;
+}
+
+.parfume-table-card table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td.dtr-control::before,
+.parfume-table-card table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th.dtr-control::before {
+    background: #6366f1;
+    color: white;
+}
+
+
+/* ================= MODAL ================= */
+
+.parfume-page .modal-content {
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, .12);
+}
+
+.parfume-page .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.parfume-page .modal-header .modal-title {
+    font-weight: 700;
+}
+
+.parfume-page .modal-body {
+    padding: 24px;
+}
+
+.parfume-page .modal-footer {
+    border-top: 1px solid #f1f5f9;
+    padding: 16px 24px;
+}
+
+.parfume-page .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+.parfume-page .form-control,
+.parfume-page .form-select {
+    border: 1px solid #e5e7eb;
+    min-height: 48px;
+    border-radius: 14px;
+    box-shadow: none;
+    font-size: 14px;
+}
+
+.parfume-page textarea.form-control {
+    min-height: auto;
+}
+
+.parfume-page .form-control:focus,
+.parfume-page .form-select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 .2rem rgba(99, 102, 241, .15);
+}
+
+.parfume-page .modal-footer .btn-primary {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border: none;
+    min-height: 44px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.parfume-page .modal-footer .btn-light {
+    min-height: 44px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 991px) {
+    .parfume-page .page-header {
+        margin-bottom: 20px;
+    }
+
+    .parfume-page .table-card-header {
+        padding: 18px 16px;
+    }
+
+    .parfume-dt-top,
+    .parfume-dt-bottom {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .parfume-table thead th:first-child,
+    .parfume-table tbody td:first-child {
+        padding-left: 16px;
+    }
+
+    .parfume-table thead th:last-child,
+    .parfume-table tbody td:last-child {
+        padding-right: 16px;
+    }
+}
+
+@media (max-width: 767px) {
+    .parfume-page .page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-add-parfume {
+        width: 100%;
+    }
+
+    .parfume-page .stats-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+        min-height: auto;
+        gap: 12px;
+    }
+
+    .parfume-page .icon-box {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    .parfume-page .table-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .parfume-dt-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .parfume-dt-top .dataTables_length,
+    .parfume-dt-top .dataTables_filter {
+        width: 100%;
+    }
+
+    .parfume-table-card .dataTables_filter label {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .parfume-table-card .dataTables_filter input {
+        width: 100% !important;
+        min-width: 0;
+        margin-left: 0 !important;
+    }
+
+    .parfume-dt-bottom {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .parfume-table-card .dataTables_paginate {
+        justify-content: center;
+    }
+
+    .product-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .cell-description {
+        max-width: 180px;
+    }
+}
+
+@media (max-width: 575px) {
+    .parfume-page .stats-card span {
+        font-size: 11px;
+    }
+
+    .parfume-page .table-card-title p {
+        display: none;
+    }
+
+    .parfume-page .modal-body,
+    .parfume-page .modal-header,
+    .parfume-page .modal-footer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+
+/* ================= PRODUCT SPECIFIC ================= */
+
+.product-thumb-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+}
+
+.product-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.cell-price {
+    font-weight: 700;
+    color: #111827;
+    white-space: nowrap;
+}
+
+.stock-badge {
+    display: inline-flex;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.stock-ok { background: #ecfdf5; color: #16a34a; }
+.stock-low { background: #fffbeb; color: #d97706; }
+.stock-empty { background: #fef2f2; color: #dc2626; }
+
+.badge-featured-yes,
+.badge-featured-no {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-featured-yes { background: #fffbeb; color: #d97706; }
+.badge-featured-no { background: #f1f5f9; color: #64748b; }
+
+.product-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+}
+
+.product-image-item {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    aspect-ratio: 1;
+}
+
+.product-image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-image-item .primary-tag {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    background: #6366f1;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.btn-remove-image {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(220, 38, 38, .9);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}

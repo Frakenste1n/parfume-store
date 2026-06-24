@@ -1,14 +1,22 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Brands extends CI_Controller
+class Brands extends MY_Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->admin_only();
+    }
+
     public function index()
     {
-        $data['title'] = 'Admin - Brand Management';
-        $data['admin_name'] = 'Administrator';
-        $data['content'] = 'admin/brand';
+        $data = [
+            'title' => 'Brand',
+            'content' => 'admin/brand'
+        ];
 
-        $this->load->view('admin/layouts/app', $data);
+        $this->render_admin($data);
     }
 }

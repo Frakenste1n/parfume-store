@@ -1,13 +1,22 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Users extends CI_Controller
+class Users extends MY_Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->admin_only();
+    }
+
     public function index()
     {
-        $data['title'] = 'Users';
-        $data['content'] = 'admin/user';
+        $data = [
+            'title' => 'Users',
+            'content' => 'admin/user'
+        ];
 
-        $this->load->view('admin/layouts/app', $data);
+        $this->render_admin($data);
     }
 }

@@ -1,22 +1,22 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Dashboard extends CI_Controller {
-
-  public function __construct()
+class Dashboard extends MY_Controller
+{
+    public function __construct()
     {
         parent::__construct();
 
-        $this->load->library('session'); 
+        $this->admin_only();
     }
 
     public function index()
     {
-        $data['title'] = 'Dashboard';
-        $data['content'] = 'admin/dashboard';
+        $data = [
+            'title' => 'Dashboard',
+            'content' => 'admin/dashboard'
+        ];
 
-         $data['admin_name'] = $this->session->userdata('admin_name');
-
-        $this->load->view('admin/layouts/app', $data);
+        $this->render_admin($data);
     }
 }
