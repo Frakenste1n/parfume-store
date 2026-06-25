@@ -39,4 +39,14 @@ class Brand_model extends CI_Model
             ->where('id',$id)
             ->delete($this->table);
     }
+
+    public function get_home_brands()
+{
+    return $this->db
+        ->where('is_active',1)
+        ->order_by('is_featured','DESC')
+        ->limit(8)
+        ->get('brands')
+        ->result();
+}
 }

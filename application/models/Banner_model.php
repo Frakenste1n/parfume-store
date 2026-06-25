@@ -39,4 +39,13 @@ class Banner_model extends CI_Model
             ->where('id',$id)
             ->delete($this->table);
     }
+
+    public function get_active_banner()
+{
+    return $this->db
+        ->where('is_active',1)
+        ->order_by('sort_order','ASC')
+        ->get('banners')
+        ->result();
+}
 }

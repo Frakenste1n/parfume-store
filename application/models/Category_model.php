@@ -39,4 +39,13 @@ class Category_model extends CI_Model
             ->where('id',$id)
             ->delete($this->table);
     }
+
+    public function get_home_categories()
+{
+    return $this->db
+        ->where('is_active',1)
+        ->order_by('name','ASC')
+        ->get('categories')
+        ->result();
+}
 }

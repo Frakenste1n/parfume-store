@@ -127,3 +127,7 @@ $route['admin/banners'] = 'admin/banners/index';
 $route['admin/payments'] = 'admin/payments/index';
 $route['admin/orders'] = 'admin/orders/index';
 $route['admin/setting'] = 'admin/setting/index';
+
+//customer
+$route['login'] = 'customer/auth/login';
+$route['register'] = 'customer/auth/register';

@@ -73,8 +73,7 @@ class Product_model extends CI_Model
 
     public function delete($id)
     {
-        if ($this->has_order_items($id))
-        {
+        if ($this->has_order_items($id)) {
             return 'used_in_order';
         }
 
@@ -83,12 +82,10 @@ class Product_model extends CI_Model
             ->get('product_images')
             ->result();
 
-        foreach ($images as $image)
-        {
+        foreach ($images as $image) {
             $path = FCPATH . 'uploads/products/' . $image->image;
 
-            if (is_file($path))
-            {
+            if (is_file($path)) {
                 unlink($path);
             }
         }
@@ -99,5 +96,40 @@ class Product_model extends CI_Model
         return $this->db
             ->where('id', $id)
             ->delete($this->table);
+    }
+
+    public function get_featured_home()
+    {
+        $this->db->select("
+            p.id,
+            p.name,
+            p.slug,
+            p.price,
+            b.name AS brand_name,
+            (
+                SELECT image
+                FROM product_images
+                WHERE product_id = p.id
+                ORDER BY is_primary DESC, id ASC
+                LIMIT 1
+            ) AS thumbnail
+        ");
+    
+        $this->db->from('products p');
+    
+        $this->db->join(
+            'brands b',
+            'b.id = p.brand_id',
+            'left'
+        );
+    
+        $this->db->where('p.is_active', 1);
+        $this->db->where('p.is_featured', 1);
+    
+        return $this->db
+            ->order_by('p.id', 'DESC')
+            ->limit(8)
+            ->get()
+            ->result();
     }
 }
