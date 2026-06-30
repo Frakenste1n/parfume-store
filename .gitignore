@@ -30,3 +30,16 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+
+# ==========================================
+# Project Custom
+# ==========================================
+
+# Uploads
+/uploads/
+
+# Database migration
+/database/migration/
+
+# Local configuration
+/hash.php
