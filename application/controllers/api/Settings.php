@@ -84,65 +84,7 @@ class Settings extends Base_api
             $data[$field] = $upload['file_name'];
         }
 
-        $founders = $this->collect_founders();
-
-        if (!empty($founders))
-        {
-            $data['founder_name'] = json_encode($founders, JSON_UNESCAPED_UNICODE);
-            $data['founder_photo'] = null;
-        }
-
         return $data;
-    }
-
-    private function collect_founders()
-    {
-        $founders = [];
-        $has_founder_input = false;
-
-        for ($i = 0; $i < 5; $i++)
-        {
-            $name = $this->input->post('founder_name_' . $i);
-
-            if ($name === null)
-            {
-                $name = $this->put('founder_name_' . $i);
-            }
-
-            $existing_photo = $this->input->post('founder_existing_photo_' . $i);
-
-            if ($existing_photo === null)
-            {
-                $existing_photo = $this->put('founder_existing_photo_' . $i);
-            }
-
-            $photo = $existing_photo ?: '';
-            $file_key = 'founder_photo_' . $i;
-
-            if (!empty($_FILES[$file_key]['name']))
-            {
-                $upload = upload_image($file_key, './uploads/settings/');
-
-                if (!$upload['success'])
-                {
-                    continue;
-                }
-
-                $photo = $upload['file_name'];
-            }
-
-            if ($name !== null || $photo !== '')
-            {
-                $has_founder_input = true;
-            }
-
-            $founders[] = [
-                'name'  => $name ?? '',
-                'photo' => $photo
-            ];
-        }
-
-        return $has_founder_input ? $founders : [];
     }
 
     private function collect_text_fields()
@@ -153,7 +95,7 @@ class Settings extends Base_api
             'whatsapp',
             'instagram',
             'email',
-            'address',
+            'google_maps_embed',
             'featured_title',
             'featured_subtitle'
         ];

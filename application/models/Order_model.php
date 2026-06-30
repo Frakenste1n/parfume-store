@@ -5,7 +5,8 @@ class Order_model extends CI_Model
 {
     public function checkout(
         $user_id,
-        $payment_method_id
+        $payment_method_id,
+        $shipping_address = null
     )
     {
         $this->db->trans_begin();
@@ -34,6 +35,11 @@ class Order_model extends CI_Model
             ->get()
             ->result();
 
+        if(empty($items))
+        {
+            return false;
+        }
+
         $subtotal=0;
 
         foreach($items as $item)
@@ -43,12 +49,20 @@ class Order_model extends CI_Model
 
         $order_number='ORD'.date('YmdHis');
 
+        // Get user address if not provided
+        if (!$shipping_address)
+        {
+            $user = $this->db->where('id', $user_id)->get('users')->row();
+            $shipping_address = $user->address ?? '';
+        }
+
         $this->db->insert('orders',[
             'user_id'=>$user_id,
             'order_number'=>$order_number,
             'subtotal'=>$subtotal,
             'grand_total'=>$subtotal,
-            'payment_status'=>'pending'
+            'payment_status'=>'paid',
+            'shipping_address'=>$shipping_address
         ]);
 
         $order_id=$this->db->insert_id();
@@ -82,8 +96,8 @@ class Order_model extends CI_Model
 
         $this->db->insert('order_status_histories',[
             'order_id'=>$order_id,
-            'status'=>'pending',
-            'description'=>'Pesanan dibuat'
+            'status'=>'paid',
+            'description'=>'Pesanan berhasil dibuat dan dibayar'
         ]);
 
         $this->db
@@ -149,6 +163,57 @@ class Order_model extends CI_Model
         }
 
         return $updated;
+    }
+
+    public function cancel_order($id)
+    {
+        $this->db->trans_begin();
+
+        $order = $this->db->where('id', $id)->get('orders')->row();
+
+        if (!$order)
+        {
+            return false;
+        }
+
+        // Only allow cancel if status is paid
+        if ($order->payment_status !== 'paid')
+        {
+            return false;
+        }
+
+        // Update order status to cancelled
+        $this->db->where('id', $id)->update('orders', [
+            'payment_status' => 'cancelled'
+        ]);
+
+        // Add to status history
+        $this->db->insert('order_status_histories', [
+            'order_id'    => $id,
+            'status'      => 'cancelled',
+            'description' => 'Pesanan dibatalkan'
+        ]);
+
+        // Restore stock
+        $items = $this->db->where('order_id', $id)->get('order_items')->result();
+
+        foreach ($items as $item)
+        {
+            $this->db
+                ->where('id', $item->product_id)
+                ->set('stock', 'stock+' . $item->qty, false)
+                ->update('products');
+        }
+
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            return false;
+        }
+
+        $this->db->trans_commit();
+
+        return true;
     }
 
     public function delete_order($id)

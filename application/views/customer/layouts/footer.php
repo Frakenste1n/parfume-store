@@ -78,14 +78,17 @@
                     class="footer-address">
                 </p>
 
+                <div
+                    id="footerMap"
+                    class="footer-map">
+                </div>
+
             </div>
 
         </div>
 
-        <div class="footer-bottom">
-
-            © 2026 AURA · Crafted with Elegance
-
+        <div class="footer-bottom" id="footerCopyright">
+            © <?= date('Y') ?> <?= htmlspecialchars($site_name ?? 'Store', ENT_QUOTES, 'UTF-8') ?> · Crafted with Elegance
         </div>
 
     </div>

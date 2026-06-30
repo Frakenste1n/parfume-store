@@ -10,13 +10,22 @@ class Cart_model extends CI_Model
                 cart_items.id,
                 cart_items.qty,
                 products.id as product_id,
-                products.name,
+                products.name as product_name,
                 products.price,
+                brands.name as brand_name,
+                (
+                    SELECT pi.image
+                    FROM product_images pi
+                    WHERE pi.product_id = products.id
+                    ORDER BY pi.is_primary DESC, pi.id ASC
+                    LIMIT 1
+                ) as product_image,
                 (cart_items.qty * products.price) as subtotal
             ')
             ->from('carts')
             ->join('cart_items','cart_items.cart_id = carts.id')
             ->join('products','products.id = cart_items.product_id')
+            ->join('brands','brands.id = products.brand_id')
             ->where('carts.user_id',$user_id)
             ->get()
             ->result();
@@ -58,11 +67,15 @@ class Cart_model extends CI_Model
                 ]);
         }
 
-        return $this->db->insert('cart_items',[
+        $data = [
             'cart_id'=>$cart_id,
             'product_id'=>$product_id,
             'qty'=>$qty
-        ]);
+        ];
+
+        $this->db->insert('cart_items', $data);
+
+        return $this->db->insert_id();
     }
 
     public function remove_item($id)
@@ -70,6 +83,15 @@ class Cart_model extends CI_Model
         return $this->db
             ->where('id',$id)
             ->delete('cart_items');
+    }
+
+    public function update_item_qty($id, $qty)
+    {
+        return $this->db
+            ->where('id', $id)
+            ->update('cart_items', [
+                'qty' => $qty
+            ]);
     }
 
     public function clear_cart($cart_id)

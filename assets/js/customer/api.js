@@ -6,6 +6,16 @@
 
 const API_URL = `${BASE_URL}api`;
 
+function uploadUrl(folder, filename)
+{
+    if (!filename)
+    {
+        return '';
+    }
+
+    return `${BASE_URL}uploads/${folder}/${filename}`;
+}
+
 /**
  * ==========================================
  * API REQUEST
@@ -118,6 +128,45 @@ async function apiDelete(endpoint)
     {
         console.error(
             '[API DELETE ERROR]',
+            error
+        );
+
+        throw error;
+    }
+}
+
+async function apiPut(endpoint, payload = {})
+{
+    try
+    {
+        const response = await fetch(
+            `${API_URL}/${endpoint}`,
+            {
+                method: 'PUT',
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            }
+        );
+
+        const result = await response.json();
+
+        if (!result.success)
+        {
+            throw new Error(
+                result.message || 'Request gagal'
+            );
+        }
+
+        return result.data;
+    }
+    catch(error)
+    {
+        console.error(
+            '[API PUT ERROR]',
             error
         );
 

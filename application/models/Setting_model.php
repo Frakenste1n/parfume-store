@@ -50,14 +50,14 @@ class Setting_model extends CI_Model
             {
                 foreach ($decoded as $i => $item)
                 {
-                    if ($i > 4)
+                    if ($i >= 5)
                     {
                         break;
                     }
 
                     $empty[$i] = [
-                        'name'  => $item['name'] ?? '',
-                        'photo' => $item['photo'] ?? ''
+                        'name'  => isset($item['name']) ? $item['name'] : '',
+                        'photo' => isset($item['photo']) ? $item['photo'] : ''
                     ];
                 }
 

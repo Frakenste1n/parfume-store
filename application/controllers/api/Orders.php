@@ -39,24 +39,45 @@ class Orders extends Base_api
 
     public function store_post()
     {
-        $order_id = $this->Order_model->checkout(
-            $this->post('user_id'),
-            $this->post('payment_method_id')
-        );
+        $user_id = $this->post('user_id');
+        $payment_method_id = $this->post('payment_method_id');
+        $shipping_address = $this->post('shipping_address');
 
-        if(!$order_id)
+        if (!$user_id)
         {
-            return $this->error_response(
-                'Checkout gagal'
-            );
+            return $this->error_response('User ID wajib diisi', null, 422);
         }
 
-        return $this->success_response(
-            'Checkout berhasil',
-            [
-                'order_id'=>$order_id
-            ]
-        );
+        if (!$payment_method_id)
+        {
+            return $this->error_response('Metode pembayaran wajib dipilih', null, 422);
+        }
+
+        try
+        {
+            $order_id = $this->Order_model->checkout(
+                $user_id,
+                $payment_method_id,
+                $shipping_address
+            );
+
+            if (!$order_id)
+            {
+                return $this->error_response('Checkout gagal. Silakan coba lagi.', null, 500);
+            }
+
+            return $this->success_response(
+                'Checkout berhasil',
+                [
+                    'order_id' => $order_id
+                ]
+            );
+        }
+        catch (Exception $e)
+        {
+            log_message('error', 'Checkout error: ' . $e->getMessage());
+            return $this->error_response('Terjadi kesalahan saat memproses checkout: ' . $e->getMessage(), null, 500);
+        }
     }
 
     public function update_put($id)

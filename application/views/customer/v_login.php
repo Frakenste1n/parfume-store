@@ -2,34 +2,17 @@
 
     <div class="auth-wrapper">
 
-        <div class="auth-banner" data-aos="fade-right">
-
-            <div class="auth-overlay">
-
-                <h1>Welcome Back</h1>
-
-                <p>
-                    Discover your signature scent and experience the art of luxury fragrance.
-                </p>
-
-            </div>
-
-        </div>
-
-        <div class="auth-card" data-aos="fade-left">
+        <div class="auth-card" data-aos="fade-up">
 
             <a href="<?= base_url() ?>" class="auth-logo">
-
-                <img src="" id="siteLogo">
-
-                <h2>AURA</h2>
-
+                <img src="<?= !empty($site_logo) ? htmlspecialchars($site_logo, ENT_QUOTES, 'UTF-8') : '' ?>" id="siteLogo" alt="Logo">
+                <h2><?= htmlspecialchars($site_name ?? 'Parfume Store', ENT_QUOTES, 'UTF-8') ?></h2>
             </a>
 
-            <h3>Login</h3>
+            <h3>Welcome Back</h3>
 
             <p class="auth-subtitle">
-                Sign in to continue shopping
+                Masuk ke akun <?= htmlspecialchars($site_name ?? 'toko', ENT_QUOTES, 'UTF-8') ?> untuk melanjutkan belanja
             </p>
 
             <form id="loginForm">
@@ -45,7 +28,8 @@
                         <input
                             type="email"
                             name="email"
-                            required>
+                            required
+                            placeholder="Masukkan email Anda">
 
                     </div>
 
@@ -63,7 +47,8 @@
                             type="password"
                             id="password"
                             name="password"
-                            required>
+                            required
+                            placeholder="Masukkan password">
 
                         <button
                             type="button"
@@ -81,6 +66,7 @@
                     class="auth-btn"
                     type="submit">
 
+                    <i class="bi bi-box-arrow-in-right"></i>
                     Login
 
                 </button>

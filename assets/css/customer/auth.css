@@ -99,19 +99,14 @@ body::after{
 
 .auth-wrapper{
 
-    width:min(1150px,100%);
-
-    display:grid;
-
-    grid-template-columns:
-    1.1fr .9fr;
+    width:min(500px,100%);
 
     overflow:hidden;
 
-    border-radius:42px;
+    border-radius:32px;
 
     background:
-    rgba(255,255,255,.78);
+    rgba(255,255,255,.85);
 
     backdrop-filter:blur(28px);
     -webkit-backdrop-filter:blur(28px);
@@ -119,127 +114,18 @@ body::after{
     border:1px solid rgba(255,255,255,.9);
 
     box-shadow:
-    0 30px 80px rgba(0,0,0,.05);
+    0 30px 80px rgba(0,0,0,.08);
 }
 
 
 
 /*======================
-      LEFT SIDE
-======================*/
-
-.auth-banner{
-
-    position:relative;
-
-    overflow:hidden;
-
-    min-height:850px;
-
-    background:
-    linear-gradient(
-    160deg,
-    #EADBC8,
-    #F7EFE4
-    );
-}
-
-
-.auth-banner::before{
-
-    content:'';
-
-    position:absolute;
-
-    width:380px;
-    height:380px;
-
-    border-radius:50%;
-
-    background:
-    rgba(255,255,255,.5);
-
-    filter:blur(40px);
-
-    top:-80px;
-    right:-60px;
-}
-
-
-.auth-banner::after{
-
-    content:'';
-
-    position:absolute;
-
-    width:250px;
-    height:250px;
-
-    border-radius:50%;
-
-    background:
-    rgba(255,255,255,.45);
-
-    filter:blur(40px);
-
-    left:-60px;
-    bottom:-50px;
-}
-
-
-.auth-overlay{
-
-    height:100%;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:flex-end;
-
-    padding:80px;
-
-    position:relative;
-
-    z-index:2;
-}
-
-
-.auth-overlay h1{
-
-    font-family:
-    'Cormorant Garamond',serif;
-
-    font-size:78px;
-
-    line-height:1.05;
-
-    margin-bottom:25px;
-
-    color:#4B4035;
-}
-
-
-.auth-overlay p{
-
-    max-width:500px;
-
-    line-height:1.9;
-
-    color:#6B5F54;
-
-    font-size:16px;
-}
-
-
-
-/*======================
-       RIGHT SIDE
+       CARD
 ======================*/
 
 .auth-card{
 
-    padding:80px 70px;
+    padding:60px 50px;
 
     display:flex;
 
@@ -254,41 +140,53 @@ body::after{
 
     text-decoration:none;
 
-    margin-bottom:60px;
+    margin-bottom:40px;
+
+    text-align:center;
+}
+
+
+.auth-logo img{
+
+    width:80px;
+
+    height:80px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid #E7DDD0;
+
+    margin-bottom:16px;
 }
 
 
 .auth-logo h2{
 
-    font-size:58px;
+    font-size:42px;
 
     color:#4B4035;
 
     font-family:
     'Cormorant Garamond',serif;
 
-    margin-bottom:8px;
-}
-
-
-.auth-logo span{
-
-    letter-spacing:4px;
-
-    color:#A49789;
-
-    font-size:12px;
+    margin:0;
 }
 
 
 .auth-card h3{
 
-    font-size:42px;
+    font-size:36px;
 
     margin-bottom:12px;
 
     font-family:
     'Cormorant Garamond',serif;
+
+    text-align:center;
+
+    color:#4B4035;
 }
 
 
@@ -296,9 +194,13 @@ body::after{
 
     color:#8B8177;
 
-    margin-bottom:40px;
+    margin-bottom:32px;
 
-    line-height:1.8;
+    line-height:1.6;
+
+    text-align:center;
+
+    font-size:14px;
 }
 
 
@@ -397,11 +299,11 @@ body::after{
 
     width:100%;
 
-    height:64px;
+    height:56px;
 
     border:none;
 
-    border-radius:22px;
+    border-radius:16px;
 
     margin-top:12px;
 
@@ -423,17 +325,30 @@ body::after{
     transition:.35s;
 
     box-shadow:
-    0 20px 45px rgba(200,169,126,.28);
+    0 15px 35px rgba(200,169,126,.28);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
 }
 
 
 .auth-btn:hover{
 
     transform:
-    translateY(-4px);
+    translateY(-3px);
 
     box-shadow:
-    0 30px 55px rgba(200,169,126,.35);
+    0 20px 45px rgba(200,169,126,.35);
+}
+
+.auth-btn i{
+
+    font-size:18px;
 }
 
 
@@ -467,41 +382,28 @@ body::after{
      RESPONSIVE
 ======================*/
 
-@media(max-width:992px){
-
-    .auth-wrapper{
-
-        grid-template-columns:1fr;
-    }
-
-    .auth-banner{
-
-        display:none;
-    }
-
-    .auth-card{
-
-        padding:55px 35px;
-    }
-
-}
-
-
 @media(max-width:576px){
 
     .auth-card{
 
-        padding:45px 25px;
+        padding:45px 30px;
+    }
+
+    .auth-logo img{
+
+        width:70px;
+
+        height:70px;
     }
 
     .auth-logo h2{
 
-        font-size:48px;
+        font-size:36px;
     }
 
     .auth-card h3{
 
-        font-size:34px;
+        font-size:30px;
     }
 
 }

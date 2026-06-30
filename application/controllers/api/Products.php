@@ -20,6 +20,21 @@ class Products extends Base_api
         );
     }
 
+    public function search_get()
+    {
+        $keyword = $this->get('q');
+        $results = $this->Product_model->search($keyword);
+
+        return $this->success_response(
+            'Hasil pencarian produk',
+            [
+                'keyword' => trim((string) $keyword),
+                'total'   => count($results),
+                'items'   => $results
+            ]
+        );
+    }
+
     public function show_get($id)
     {
         $product = $this->Product_model->get_detail($id);

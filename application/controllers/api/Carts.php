@@ -14,28 +14,50 @@ class Carts extends Base_api
     {
         $user_id = $this->get('user_id');
 
+        $items = $this->Cart_model->get_cart($user_id);
+
         return $this->success_response(
             'Cart berhasil diambil',
-            $this->Cart_model->get_cart($user_id)
+            [
+                'items' => $items
+            ]
         );
     }
 
     public function store_post()
     {
-        $user_id=$this->post('user_id');
+        $user_id = $this->post('user_id');
+        $product_id = $this->post('product_id');
+        $qty = $this->post('qty');
 
-        $cart_id=$this->Cart_model
-            ->get_or_create_cart($user_id);
+        if (!$user_id || !$product_id || !$qty)
+        {
+            return $this->error_response(
+                'Data tidak lengkap'
+            );
+        }
 
-        $this->Cart_model->add_item(
-            $cart_id,
-            $this->post('product_id'),
-            $this->post('qty')
-        );
+        try
+        {
+            $cart_id = $this->Cart_model
+                ->get_or_create_cart($user_id);
 
-        return $this->success_response(
-            'Produk berhasil ditambahkan ke cart'
-        );
+            $this->Cart_model->add_item(
+                $cart_id,
+                $product_id,
+                $qty
+            );
+
+            return $this->success_response(
+                'Produk berhasil ditambahkan ke cart'
+            );
+        }
+        catch (Exception $e)
+        {
+            return $this->error_response(
+                'Gagal menambahkan ke cart: ' . $e->getMessage()
+            );
+        }
     }
 
     public function delete_delete($id)
@@ -44,6 +66,22 @@ class Carts extends Base_api
 
         return $this->success_response(
             'Produk berhasil dihapus'
+        );
+    }
+
+    public function update_put($id)
+    {
+        $qty = $this->put('qty');
+
+        if (!$qty || $qty < 1)
+        {
+            return $this->error_response('Quantity minimal 1');
+        }
+
+        $this->Cart_model->update_item_qty($id, $qty);
+
+        return $this->success_response(
+            'Quantity berhasil diupdate'
         );
     }
 }

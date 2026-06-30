@@ -1,0 +1,304 @@
+/* BRANDS PAGE STYLES */
+
+.brands-section {
+    padding: 120px 0 80px;
+}
+
+.brands-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.brands-subtitle {
+    display: block;
+    color: #C8A97E;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.brands-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    color: #4B4035;
+    margin: 0 0 16px;
+    font-weight: 600;
+}
+
+.brands-description {
+    color: #8D8278;
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* BRANDS GRID */
+
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+    min-height: 400px;
+}
+
+.brands-loading {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    color: #8D8278;
+}
+
+.brands-loading .loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid #E7DDD0;
+    border-top-color: #C8A97E;
+    border-radius: 50%;
+    margin-bottom: 16px;
+    animation: spinApp 0.8s linear infinite;
+}
+
+/* BRAND CARD */
+
+.brand-card {
+    background: #fff;
+    border: 1px solid #E7DDD0;
+    border-radius: 28px;
+    padding: 32px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.brand-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #C8A97E, #D4B896);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.brand-card:hover::before {
+    transform: scaleX(1);
+}
+
+.brand-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+    border-color: #C8A97E;
+}
+
+.brand-card-logo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    background: #FAF6F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid #E7DDD0;
+    transition: all 0.3s ease;
+}
+
+.brand-card:hover .brand-card-logo {
+    border-color: #C8A97E;
+    background: #fff;
+}
+
+.brand-card-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.brand-card-logo-placeholder {
+    font-size: 48px;
+    color: #C8A97E;
+}
+
+.brand-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    color: #4B4035;
+    margin: 0 0 12px;
+    font-weight: 600;
+}
+
+.brand-card-origin {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #8D8278;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.brand-card-origin i {
+    font-size: 14px;
+    color: #C8A97E;
+}
+
+.brand-card-description {
+    color: #8D8278;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.brand-card-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.brand-card-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #FAF6F0;
+    color: #8D8278;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.brand-card-link:hover {
+    background: #C8A97E;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.brand-card-link i {
+    font-size: 18px;
+}
+
+.brand-featured-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(200, 169, 126, 0.95);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(8px);
+}
+
+/* EMPTY STATE */
+
+.brands-empty {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.empty-state-card {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 48px 32px;
+    background: #fff;
+    border: 1px solid #E7DDD0;
+    border-radius: 28px;
+}
+
+.empty-state-card i {
+    font-size: 56px;
+    color: #C8A97E;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.empty-state-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: #4B4035;
+    margin: 0 0 12px;
+}
+
+.empty-state-card p {
+    color: #8D8278;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.back-home-btn {
+    display: inline-flex;
+    padding: 12px 28px;
+    border-radius: 999px;
+    background: #C8A97E;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.back-home-btn:hover {
+    background: #B89A70;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200, 169, 126, 0.3);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 992px) {
+    .brands-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .brands-section {
+        padding: 100px 0 60px;
+    }
+
+    .brands-title {
+        font-size: 40px;
+    }
+
+    .brands-description {
+        font-size: 14px;
+    }
+
+    .brands-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .brand-card {
+        padding: 24px;
+    }
+
+    .brand-card-logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .brand-card-name {
+        font-size: 22px;
+    }
+}

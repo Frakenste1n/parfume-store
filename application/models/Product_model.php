@@ -73,7 +73,8 @@ class Product_model extends CI_Model
 
     public function delete($id)
     {
-        if ($this->has_order_items($id)) {
+        if ($this->has_order_items($id))
+        {
             return 'used_in_order';
         }
 
@@ -82,10 +83,12 @@ class Product_model extends CI_Model
             ->get('product_images')
             ->result();
 
-        foreach ($images as $image) {
+        foreach ($images as $image)
+        {
             $path = FCPATH . 'uploads/products/' . $image->image;
 
-            if (is_file($path)) {
+            if (is_file($path))
+            {
                 unlink($path);
             }
         }
@@ -98,37 +101,67 @@ class Product_model extends CI_Model
             ->delete($this->table);
     }
 
-    public function get_featured_home()
+    public function get_featured_home($limit = 8)
     {
-        $this->db->select("
-            p.id,
-            p.name,
-            p.slug,
-            p.price,
-            b.name AS brand_name,
-            (
-                SELECT image
-                FROM product_images
-                WHERE product_id = p.id
-                ORDER BY is_primary DESC, id ASC
-                LIMIT 1
-            ) AS thumbnail
-        ");
-    
-        $this->db->from('products p');
-    
-        $this->db->join(
-            'brands b',
-            'b.id = p.brand_id',
-            'left'
-        );
-    
-        $this->db->where('p.is_active', 1);
-        $this->db->where('p.is_featured', 1);
-    
         return $this->db
-            ->order_by('p.id', 'DESC')
-            ->limit(8)
+            ->select('
+                products.*,
+                brands.name as brand_name,
+                categories.name as category_name,
+                (
+                    SELECT pi.image
+                    FROM product_images pi
+                    WHERE pi.product_id = products.id
+                    ORDER BY pi.is_primary DESC, pi.id ASC
+                    LIMIT 1
+                ) as thumbnail
+            ')
+            ->from('products')
+            ->join('brands', 'brands.id = products.brand_id')
+            ->join('categories', 'categories.id = products.category_id')
+            ->where('products.is_active', 1)
+            ->where('products.is_featured', 1)
+            ->order_by('products.id', 'DESC')
+            ->limit($limit)
+            ->get()
+            ->result();
+    }
+
+    public function search($keyword, $limit = 50)
+    {
+        $keyword = trim((string) $keyword);
+
+        if ($keyword === '')
+        {
+            return [];
+        }
+
+        return $this->db
+            ->select('
+                products.*,
+                brands.name as brand_name,
+                categories.name as category_name,
+                (
+                    SELECT pi.image
+                    FROM product_images pi
+                    WHERE pi.product_id = products.id
+                    ORDER BY pi.is_primary DESC, pi.id ASC
+                    LIMIT 1
+                ) as thumbnail
+            ')
+            ->from('products')
+            ->join('brands', 'brands.id = products.brand_id')
+            ->join('categories', 'categories.id = products.category_id')
+            ->where('products.is_active', 1)
+            ->group_start()
+                ->like('products.name', $keyword)
+                ->or_like('products.short_description', $keyword)
+                ->or_like('products.description', $keyword)
+                ->or_like('brands.name', $keyword)
+                ->or_like('categories.name', $keyword)
+            ->group_end()
+            ->order_by('products.id', 'DESC')
+            ->limit($limit)
             ->get()
             ->result();
     }

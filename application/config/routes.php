@@ -76,6 +76,7 @@ $route['api/categories/(:num)']['PUT'] = 'api/categories/update/$1';
 $route['api/categories/(:num)']['DELETE'] = 'api/categories/delete/$1';
 
 $route['api/products']['GET'] = 'api/products/index';
+$route['api/products/search']['GET'] = 'api/products/search';
 $route['api/products']['POST'] = 'api/products/store';
 $route['api/products/(:num)']['GET'] = 'api/products/show/$1';
 $route['api/products/(:num)']['PUT'] = 'api/products/update/$1';
@@ -95,6 +96,19 @@ $route['api/settings']['GET'] = 'api/settings/index';
 $route['api/settings']['PUT'] = 'api/settings/update';
 $route['api/settings']['POST'] = 'api/settings/update';
 
+$route['api/founders']['GET'] = 'api/founders/index';
+$route['api/founders']['POST'] = 'api/founders/store';
+$route['api/founders/(:num)']['GET'] = 'api/founders/detail/$1';
+$route['api/founders/(:num)']['PUT'] = 'api/founders/update/$1';
+$route['api/founders/(:num)']['DELETE'] = 'api/founders/delete/$1';
+$route['api/founders/(:num)/toggle']['PUT'] = 'api/founders/toggle/$1';
+
+$route['api/users']['GET'] = 'api/users/index';
+$route['api/users/(:num)']['GET'] = 'api/users/index/$1';
+$route['api/users']['POST'] = 'api/users/index';
+$route['api/users/(:num)']['PUT'] = 'api/users/index/$1';
+$route['api/users/(:num)']['DELETE'] = 'api/users/index/$1';
+
 $route['api/payment-methods']['GET'] = 'api/payment_methods/index';
 $route['api/payment-methods']['POST'] = 'api/payment_methods/store';
 $route['api/payment-methods/(:num)']['GET'] = 'api/payment_methods/show/$1';
@@ -104,6 +118,8 @@ $route['api/payment-methods/(:num)']['DELETE'] = 'api/payment_methods/delete/$1'
 
 $route['api/cart']['GET'] = 'api/carts/index';
 $route['api/cart']['POST'] = 'api/carts/store';
+$route['api/cart/(:num)']['DELETE'] = 'api/carts/delete/$1';
+$route['api/cart/(:num)']['PUT'] = 'api/carts/update/$1';
 
 $route['api/orders']['GET'] = 'api/orders/index';
 $route['api/orders']['POST'] = 'api/orders/store';
@@ -112,6 +128,18 @@ $route['api/orders/(:num)']['PUT'] = 'api/orders/update/$1';
 $route['api/orders/(:num)']['DELETE'] = 'api/orders/delete/$1';
 
 $route['api/dashboard']['GET'] = 'api/dashboard/index';
+$route['api/home']['GET'] = 'api/home/index';
+
+// customer pages
+$route['katalog'] = 'welcome/katalog';
+$route['brands'] = 'welcome/brands';
+$route['tentang'] = 'welcome/tentang';
+$route['search'] = 'welcome/search';
+$route['cart'] = 'welcome/cart';
+$route['checkout'] = 'welcome/checkout';
+$route['checkout/success/(:num)'] = 'welcome/checkout_success/$1';
+$route['login'] = 'customer/auth/login';
+$route['register'] = 'customer/auth/register';
 
 //admin
 $route['admin/login']='admin/login/index';
@@ -127,7 +155,3 @@ $route['admin/banners'] = 'admin/banners/index';
 $route['admin/payments'] = 'admin/payments/index';
 $route['admin/orders'] = 'admin/orders/index';
 $route['admin/setting'] = 'admin/setting/index';
-
-//customer
-$route['login'] = 'customer/auth/login';
-$route['register'] = 'customer/auth/register';

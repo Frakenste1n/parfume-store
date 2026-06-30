@@ -2,38 +2,17 @@
 
     <div class="auth-wrapper">
 
-        <div class="auth-banner" data-aos="fade-right">
+        <div class="auth-card" data-aos="fade-up">
 
-            <div class="auth-overlay">
-
-                <h1>Create Account</h1>
-
-                <p>
-                    Begin your luxury fragrance journey with AURA and discover timeless scents.
-                </p>
-
-            </div>
-
-        </div>
-
-        <div class="auth-card" data-aos="fade-left">
-
-            <a
-                href="<?= base_url() ?>"
-                class="auth-logo">
-
-                <img
-                    id="siteLogo"
-                    src="">
-
-                <h2>AURA</h2>
-
+            <a href="<?= base_url() ?>" class="auth-logo">
+                <img src="<?= !empty($site_logo) ? htmlspecialchars($site_logo, ENT_QUOTES, 'UTF-8') : '' ?>" id="siteLogo" alt="Logo">
+                <h2><?= htmlspecialchars($site_name ?? 'Parfume Store', ENT_QUOTES, 'UTF-8') ?></h2>
             </a>
 
-            <h3>Register</h3>
+            <h3>Create Account</h3>
 
             <p class="auth-subtitle">
-                Create your account to start shopping.
+                Buat akun customer <?= htmlspecialchars($site_name ?? 'toko', ENT_QUOTES, 'UTF-8') ?> untuk mulai belanja
             </p>
 
             <form id="registerForm">
@@ -49,7 +28,8 @@
                         <input
                             type="text"
                             name="name"
-                            required>
+                            required
+                            placeholder="Masukkan nama lengkap">
 
                     </div>
 
@@ -67,7 +47,8 @@
                         <input
                             type="email"
                             name="email"
-                            required>
+                            required
+                            placeholder="Masukkan email Anda">
 
                     </div>
 
@@ -84,7 +65,26 @@
 
                         <input
                             type="text"
-                            name="phone">
+                            name="phone"
+                            placeholder="Masukkan nomor telepon">
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Alamat</label>
+
+                    <div class="input-wrapper">
+
+                        <i class="bi bi-geo-alt"></i>
+
+                        <input
+                            type="text"
+                            name="address"
+                            placeholder="Opsional">
 
                     </div>
 
@@ -103,7 +103,8 @@
                             type="password"
                             id="registerPassword"
                             name="password"
-                            required>
+                            required
+                            placeholder="Masukkan password">
 
                         <button
                             type="button"
@@ -129,7 +130,8 @@
                         <input
                             type="password"
                             id="confirmPassword"
-                            required>
+                            required
+                            placeholder="Konfirmasi password">
 
                     </div>
 
@@ -140,6 +142,7 @@
                     class="auth-btn"
                     type="submit">
 
+                    <i class="bi bi-person-plus"></i>
                     Create Account
 
                 </button>

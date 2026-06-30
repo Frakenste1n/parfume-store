@@ -2,107 +2,63 @@ $(function () {
 
     $('.toggle-password').click(function () {
 
-        const password =
-            $('#registerPassword');
+        const input = $(this).closest('.input-wrapper').find('input');
+        const icon = $(this).find('i');
 
-        if (password.attr('type') === 'password')
+        if (input.attr('type') === 'password')
         {
-            password.attr('type', 'text');
-
-            $(this).find('i')
-                .removeClass('bi-eye')
-                .addClass('bi-eye-slash');
+            input.attr('type', 'text');
+            icon.removeClass('bi-eye').addClass('bi-eye-slash');
         }
         else
         {
-            password.attr('type', 'password');
-
-            $(this).find('i')
-                .removeClass('bi-eye-slash')
-                .addClass('bi-eye');
+            input.attr('type', 'password');
+            icon.removeClass('bi-eye-slash').addClass('bi-eye');
         }
-
     });
-
 
     $('#registerForm').submit(function (e) {
 
         e.preventDefault();
 
-        if (
-            $('#registerPassword').val() !==
-            $('#confirmPassword').val()
-        )
+        if ($('#registerPassword').val() !== $('#confirmPassword').val())
         {
-            Swal.fire(
-                'Oops',
-                'Password tidak sama',
-                'warning'
-            );
-
+            Swal.fire('Oops', 'Password tidak sama', 'warning');
             return;
         }
 
+        const $btn = $('.auth-btn');
+        const originalText = $btn.text();
+
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Loading...');
+
         $.ajax({
-
             url: BASE_URL + 'api/register',
-
             method: 'POST',
-
             data: $(this).serialize(),
-
             dataType: 'json',
-
-            beforeSend: function () {
-
-                $('.auth-btn')
-                    .html(
-                        '<span class="spinner-border spinner-border-sm"></span> Loading...'
-                    )
-                    .prop('disabled', true);
-
-            },
-
             success: function (res) {
 
-                if (res.success)
+                if (!res.success)
                 {
-                    Swal.fire({
-
-                        icon: 'success',
-
-                        title: 'Berhasil',
-
-                        text: 'Akun berhasil dibuat'
-
-                    }).then(() => {
-
-                        window.location.href =
-                            BASE_URL + 'login';
-
-                    });
-                }
-                else
-                {
-                    Swal.fire(
-                        'Oops',
-                        res.message,
-                        'error'
-                    );
+                    Swal.fire('Oops', res.message, 'error');
+                    return;
                 }
 
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Akun berhasil dibuat. Silakan login.'
+                }).then(() => {
+                    window.location.href = BASE_URL + 'login';
+                });
             },
-
+            error: function () {
+                Swal.fire('Oops', 'Server tidak dapat dihubungi', 'error');
+            },
             complete: function () {
-
-                $('.auth-btn')
-                    .html('Create Account')
-                    .prop('disabled', false);
-
+                $btn.prop('disabled', false).text(originalText);
             }
-
         });
-
     });
-
 });

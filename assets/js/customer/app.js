@@ -1,130 +1,380 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    loadSettings();
+document.addEventListener('DOMContentLoaded', async () =>
+{
+    await loadSettings();
     initNavbarButtons();
+    initSearchOverlay();
+    initMobileMenu();
 });
 
-async function loadSettings() {
-    const settings = await apiGet('/settings');
+async function loadSettings()
+{
+    try
+    {
+        const settings = await apiGet('settings');
 
-    if (!settings) {
+        if (!settings)
+        {
+            return;
+        }
+
+        applySiteBranding(settings);
+    }
+    catch (error)
+    {
+        console.error('[SETTINGS]', error);
+    }
+}
+
+function applySiteBranding(settings)
+{
+    const logoUrl = uploadUrl('settings', settings.logo);
+    const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(settings.site_name || 'Store')}&background=4b4035&color=fff`;
+
+    setTextContent('siteName', settings.site_name);
+    setTextContent('mobileSiteName', settings.site_name);
+    setTextContent('siteTagline', settings.featured_subtitle || 'Luxury Perfume Store');
+    setImageSrc('navbarLogo', logoUrl, fallbackLogo);
+    setImageSrc('mobileNavbarLogo', logoUrl, fallbackLogo);
+    setImageSrc('footerLogo', logoUrl, fallbackLogo);
+    setTextContent('footerSiteName', settings.site_name);
+    setTextContent('footerAbout', settings.about_us);
+    setTextContent('footerCopyright', `© ${new Date().getFullYear()} ${settings.site_name || 'Store'} · Crafted with Elegance`);
+
+    setHtmlContent('footerWhatsapp', settings.whatsapp
+        ? `<i class="bi bi-whatsapp"></i> ${escapeHtml(settings.whatsapp)}`
+        : '');
+
+    setHtmlContent('footerEmail', settings.email
+        ? `<i class="bi bi-envelope"></i> ${escapeHtml(settings.email)}`
+        : '');
+
+    if (settings.google_maps_embed)
+    {
+        setHtmlContent('footerMap', `
+            <iframe
+                src="${escapeHtml(settings.google_maps_embed)}"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        `);
+    }
+
+    const instagramEl = document.getElementById('footerInstagram');
+
+    if (instagramEl && settings.instagram)
+    {
+        instagramEl.href = settings.instagram;
+        instagramEl.innerHTML = '<i class="bi bi-instagram"></i> Instagram';
+    }
+
+    document.querySelectorAll('#siteLogo, .auth-logo h2').forEach((el) =>
+    {
+        if (el.tagName === 'H2')
+        {
+            el.textContent = settings.site_name || 'Store';
+        }
+    });
+
+    document.querySelectorAll('#siteLogo').forEach((el) =>
+    {
+        el.src = logoUrl || fallbackLogo;
+    });
+
+    // Update cart badge
+    updateCartBadge();
+}
+
+function setTextContent(id, value)
+{
+    const el = document.getElementById(id);
+
+    if (el && value)
+    {
+        el.textContent = value;
+    }
+}
+
+function setImageSrc(id, src, fallback)
+{
+    const el = document.getElementById(id);
+
+    if (el)
+    {
+        el.src = src || fallback;
+    }
+}
+
+function setHtmlContent(id, html)
+{
+    const el = document.getElementById(id);
+
+    if (el)
+    {
+        el.innerHTML = html;
+    }
+}
+
+function initNavbarButtons()
+{
+    const cartBtn = document.getElementById('cartBtn');
+
+    if (cartBtn)
+    {
+        cartBtn.addEventListener('click', () =>
+        {
+            window.location.href = `${BASE_URL}cart`;
+        });
+    }
+
+    initAuthButton();
+
+    window.addEventListener('scroll', () =>
+    {
+        const navbar = document.querySelector('.navbar-custom');
+
+        if (!navbar)
+        {
+            return;
+        }
+
+        navbar.classList.toggle('navbar-scrolled', window.scrollY > 40);
+    });
+}
+
+function initAuthButton()
+{
+    const isLogin = localStorage.getItem('customer_token') === 'true';
+    const authIcon = document.getElementById('authIcon');
+    const authBtn = document.getElementById('authBtn');
+
+    if (!authBtn || !authIcon)
+    {
         return;
     }
 
-    const logoUrl = `${window.location.origin}/parfume-store/uploads/settings/${settings.logo}`;
+    if (isLogin)
+    {
+        authIcon.className = 'bi bi-box-arrow-right';
 
-    //--------------------------------
-    // navbar
-    //--------------------------------
+        authBtn.addEventListener('click', () =>
+        {
+            Swal.fire({
+                title: 'Keluar akun?',
+                text: 'Anda akan logout dari akun customer.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, logout',
+                cancelButtonText: 'Batal'
+            }).then((result) =>
+            {
+                if (!result.isConfirmed)
+                {
+                    return;
+                }
 
-    document.getElementById('siteName').textContent =
-        settings.site_name;
+                localStorage.removeItem('customer_token');
+                localStorage.removeItem('customer_user');
+                localStorage.removeItem('customer_name');
+                window.location.href = BASE_URL;
+            });
+        });
+    }
+    else
+    {
+        authIcon.className = 'bi bi-person';
 
-    document.getElementById('navbarLogo').src =
-        logoUrl;
-
-    window.addEventListener(
-        'scroll',
-        () => {
-            const navbar =
-                document.querySelector('.navbar-custom');
-
-            if (window.scrollY > 40) {
-                navbar.classList.add(
-                    'navbar-scrolled'
-                );
-            }
-            else {
-                navbar.classList.remove(
-                    'navbar-scrolled'
-                );
-            }
-        }
-    );
-
-    //--------------------------------
-    // footer
-    //--------------------------------
-
-    document.getElementById('footerLogo').src =
-        logoUrl;
-
-    document.getElementById('footerSiteName').textContent =
-        settings.site_name;
-
-    document.getElementById('footerAbout').textContent =
-        settings.about_us;
-
-    document.getElementById('footerWhatsapp').innerHTML =
-        `<i class="fa-brands fa-whatsapp"></i> ${settings.whatsapp}`;
-
-    document.getElementById('footerEmail').innerHTML =
-        `<i class="fa-regular fa-envelope"></i> ${settings.email}`;
-
-    document.getElementById('footerAddress').innerHTML =
-        `<i class="fa-solid fa-location-dot"></i> ${settings.address}`;
-
-    document.getElementById('footerInstagram').href =
-        settings.instagram;
-
-    document.getElementById('footerInstagram').innerHTML =
-        `<i class="fa-brands fa-instagram"></i> Instagram`;
+        authBtn.addEventListener('click', () =>
+        {
+            window.location.href = `${BASE_URL}login`;
+        });
+    }
 }
 
-function initNavbarButtons() {
-    //--------------------------------
-    // search
-    //--------------------------------
-    document.getElementById('searchBtn')
-        .addEventListener('click', () => {
-            window.location.href =
-                `${window.location.origin}/parfume-store/katalog`;
-        });
+function initSearchOverlay()
+{
+    const searchBtn = document.getElementById('searchBtn');
+    const overlay = document.getElementById('searchOverlay');
+    const closeBtn = document.getElementById('closeSearchOverlay');
+    const quickForm = document.getElementById('quickSearchForm');
+    const quickInput = document.getElementById('quickSearchInput');
 
+    if (!searchBtn || !overlay)
+    {
+        return;
+    }
 
-    //--------------------------------
-    // cart
-    //--------------------------------
-    document.getElementById('cartBtn')
-        .addEventListener('click', () => {
-            window.location.href =
-                `${window.location.origin}/parfume-store/cart`;
-        });
+    searchBtn.addEventListener('click', () =>
+    {
+        overlay.classList.add('active');
+        document.body.classList.add('search-open');
 
+        if (quickInput)
+        {
+            quickInput.focus();
+        }
+    });
 
-    //--------------------------------
-    // auth
-    //--------------------------------
+    const closeOverlay = () =>
+    {
+        overlay.classList.remove('active');
+        document.body.classList.remove('search-open');
+    };
 
-    //--------------------------------
-    // auth
-    //--------------------------------
+    if (closeBtn)
+    {
+        closeBtn.addEventListener('click', closeOverlay);
+    }
 
-    const isLogin =
-        localStorage.getItem('customer_token');
+    overlay.addEventListener('click', (event) =>
+    {
+        if (event.target === overlay)
+        {
+            closeOverlay();
+        }
+    });
 
-    const authIcon =
-        document.getElementById('authIcon');
-
-    const authBtn =
-        document.getElementById('authBtn');
-
-    if (isLogin) {
-        authIcon.className =
-            'bi bi-box-arrow-right';
-
-        authBtn.addEventListener('click', () => {
-            localStorage.removeItem('customer_token');
-
-            location.reload();
+    if (quickForm)
+    {
+        quickForm.addEventListener('submit', (event) =>
+        {
+            event.preventDefault();
+            const keyword = quickInput.value.trim();
+            window.location.href = `${BASE_URL}search${keyword ? '?q=' + encodeURIComponent(keyword) : ''}`;
         });
     }
-    else {
-        authIcon.className =
-            'bi bi-person';
+}
 
-        authBtn.addEventListener('click', () => {
-            window.location.href =
-                `${window.location.origin}/parfume-store/login`;
+function escapeHtml(str)
+{
+    return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function initMobileMenu()
+{
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    const closeMobileMenu = document.getElementById('closeMobileMenu');
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+
+    if (!hamburgerBtn || !mobileMenuOverlay)
+    {
+        return;
+    }
+
+    const openMenu = () =>
+    {
+        hamburgerBtn.classList.add('active');
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeMenu = () =>
+    {
+        hamburgerBtn.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    };
+
+    hamburgerBtn.addEventListener('click', openMenu);
+
+    if (closeMobileMenu)
+    {
+        closeMobileMenu.addEventListener('click', closeMenu);
+    }
+
+    mobileMenuOverlay.addEventListener('click', (event) =>
+    {
+        if (event.target === mobileMenuOverlay)
+        {
+            closeMenu();
+        }
+    });
+
+    // Close menu when clicking on a link
+    const mobileLinks = mobileMenuOverlay.querySelectorAll('.mobile-menu-link');
+    mobileLinks.forEach(link =>
+    {
+        link.addEventListener('click', closeMenu);
+    });
+
+    // Mobile auth button
+    if (mobileAuthBtn)
+    {
+        const isLogin = localStorage.getItem('customer_token') === 'true';
+
+        mobileAuthBtn.addEventListener('click', () =>
+        {
+            if (isLogin)
+            {
+                Swal.fire({
+                    title: 'Keluar akun?',
+                    text: 'Anda akan logout dari akun customer.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, logout',
+                    cancelButtonText: 'Batal'
+                }).then((result) =>
+                {
+                    if (!result.isConfirmed)
+                    {
+                        return;
+                    }
+
+                    localStorage.removeItem('customer_token');
+                    localStorage.removeItem('customer_user');
+                    localStorage.removeItem('customer_name');
+                    window.location.href = BASE_URL;
+                });
+            }
+            else
+            {
+                window.location.href = `${BASE_URL}login`;
+            }
         });
     }
+
+    // Update mobile logo
+    const mobileNavbarLogo = document.getElementById('mobileNavbarLogo');
+    const navbarLogo = document.getElementById('navbarLogo');
+    if (mobileNavbarLogo && navbarLogo)
+    {
+        mobileNavbarLogo.src = navbarLogo.src;
+    }
+}
+
+function updateCartBadge()
+{
+    const badge = document.getElementById('cartBadge');
+    const mobileBadge = document.getElementById('mobileCartBadge');
+    if (!badge) return;
+
+    const userId = localStorage.getItem('customer_user');
+    if (!userId)
+    {
+        badge.textContent = '';
+        badge.style.display = 'none';
+        if (mobileBadge)
+        {
+            mobileBadge.textContent = '0';
+        }
+        return;
+    }
+
+    apiGet(`cart?user_id=${userId}`)
+        .then(cart =>
+        {
+            const totalItems = cart && cart.items ? cart.items.reduce((sum, item) => sum + (parseInt(item.qty) || 0), 0) : 0;
+            badge.textContent = totalItems > 0 ? totalItems.toString() : '';
+            badge.style.display = totalItems > 0 ? 'flex' : 'none';
+            if (mobileBadge)
+            {
+                mobileBadge.textContent = totalItems.toString();
+            }
+        })
+        .catch(err => console.error('[CART BADGE ERROR]', err));
 }
