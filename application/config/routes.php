@@ -126,6 +126,7 @@ $route['api/orders']['POST'] = 'api/orders/store';
 $route['api/orders/(:num)']['GET'] = 'api/orders/show/$1';
 $route['api/orders/(:num)']['PUT'] = 'api/orders/update/$1';
 $route['api/orders/(:num)']['DELETE'] = 'api/orders/delete/$1';
+$route['api/orders/(:num)/cancel']['PUT'] = 'api/orders/cancel/$1';
 
 $route['api/dashboard']['GET'] = 'api/dashboard/index';
 $route['api/home']['GET'] = 'api/home/index';
@@ -138,6 +139,7 @@ $route['search'] = 'welcome/search';
 $route['cart'] = 'welcome/cart';
 $route['checkout'] = 'welcome/checkout';
 $route['checkout/success/(:num)'] = 'welcome/checkout_success/$1';
+$route['orders'] = 'welcome/orders';
 $route['login'] = 'customer/auth/login';
 $route['register'] = 'customer/auth/register';
 

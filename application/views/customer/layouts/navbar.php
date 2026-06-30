@@ -22,9 +22,14 @@
             <i class="bi bi-search"></i>
         </button>
 
-        <button id="authBtn" class="nav-icon-btn" type="button" aria-label="Account">
-            <i id="authIcon" class="bi bi-person-circle"></i>
-        </button>
+        <div class="auth-dropdown-wrapper">
+            <button id="authBtn" class="nav-icon-btn" type="button" aria-label="Account">
+                <i id="authIcon" class="bi bi-person-circle"></i>
+            </button>
+            <div id="authDropdown" class="auth-dropdown">
+                <div id="authDropdownContent"></div>
+            </div>
+        </div>
 
         <button id="cartBtn" class="nav-icon-btn cart-btn" type="button" aria-label="Cart">
             <i class="bi bi-bag"></i>
@@ -72,10 +77,12 @@
             </a>
         </div>
         <div class="mobile-menu-footer">
-            <button id="mobileAuthBtn" class="mobile-menu-btn">
-                <i class="bi bi-person-circle"></i>
-                <span>Akun</span>
-            </button>
+            <div id="mobileAuthSection">
+                <button id="mobileAuthBtn" class="mobile-menu-btn">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Akun</span>
+                </button>
+            </div>
             <a href="<?= base_url('cart') ?>" class="mobile-menu-btn">
                 <i class="bi bi-bag"></i>
                 <span>Keranjang</span>

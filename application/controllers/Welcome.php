@@ -43,6 +43,11 @@ class Welcome extends CI_Controller
         $this->render_page('Checkout Success', 'checkout-success.css', 'checkout-success.js', 'customer/v_checkout_success');
     }
 
+    public function orders()
+    {
+        $this->render_page('Riwayat Pesanan', 'orders.css', 'orders.js', 'customer/v_orders');
+    }
+
     private function render_page($title, $css, $js, $content)
     {
         $this->load->model('Setting_model');

@@ -147,6 +147,8 @@ function initAuthButton()
     const isLogin = localStorage.getItem('customer_token') === 'true';
     const authIcon = document.getElementById('authIcon');
     const authBtn = document.getElementById('authBtn');
+    const authDropdown = document.getElementById('authDropdown');
+    const authDropdownContent = document.getElementById('authDropdownContent');
 
     if (!authBtn || !authIcon)
     {
@@ -155,29 +157,41 @@ function initAuthButton()
 
     if (isLogin)
     {
-        authIcon.className = 'bi bi-box-arrow-right';
+        authIcon.className = 'bi bi-person-circle';
 
-        authBtn.addEventListener('click', () =>
+        // Render dropdown content
+        if (authDropdownContent)
         {
-            Swal.fire({
-                title: 'Keluar akun?',
-                text: 'Anda akan logout dari akun customer.',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, logout',
-                cancelButtonText: 'Batal'
-            }).then((result) =>
-            {
-                if (!result.isConfirmed)
-                {
-                    return;
-                }
+            authDropdownContent.innerHTML = `
+                <a href="${BASE_URL}orders" class="auth-dropdown-item">
+                    <i class="bi bi-receipt"></i>
+                    <span>Riwayat Pesanan</span>
+                </a>
+                <div class="auth-dropdown-divider"></div>
+                <a href="#" class="auth-dropdown-item" onclick="handleLogout(event)">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                </a>
+            `;
+        }
 
-                localStorage.removeItem('customer_token');
-                localStorage.removeItem('customer_user');
-                localStorage.removeItem('customer_name');
-                window.location.href = BASE_URL;
-            });
+        // Toggle dropdown on click
+        authBtn.addEventListener('click', (event) =>
+        {
+            event.stopPropagation();
+            if (authDropdown)
+            {
+                authDropdown.classList.toggle('active');
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) =>
+        {
+            if (authDropdown && !authDropdown.contains(event.target) && !authBtn.contains(event.target))
+            {
+                authDropdown.classList.remove('active');
+            }
         });
     }
     else
@@ -189,6 +203,30 @@ function initAuthButton()
             window.location.href = `${BASE_URL}login`;
         });
     }
+}
+
+function handleLogout(event)
+{
+    event.preventDefault();
+    Swal.fire({
+        title: 'Keluar akun?',
+        text: 'Anda akan logout dari akun customer.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, logout',
+        cancelButtonText: 'Batal'
+    }).then((result) =>
+    {
+        if (!result.isConfirmed)
+        {
+            return;
+        }
+
+        localStorage.removeItem('customer_token');
+        localStorage.removeItem('customer_user');
+        localStorage.removeItem('customer_name');
+        window.location.href = BASE_URL;
+    });
 }
 
 function initSearchOverlay()
@@ -302,40 +340,61 @@ function initMobileMenu()
         link.addEventListener('click', closeMenu);
     });
 
-    // Mobile auth button
-    if (mobileAuthBtn)
+    // Mobile auth section
+    const mobileAuthSection = document.getElementById('mobileAuthSection');
+    if (mobileAuthSection)
     {
         const isLogin = localStorage.getItem('customer_token') === 'true';
 
-        mobileAuthBtn.addEventListener('click', () =>
+        if (isLogin)
         {
-            if (isLogin)
-            {
-                Swal.fire({
-                    title: 'Keluar akun?',
-                    text: 'Anda akan logout dari akun customer.',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, logout',
-                    cancelButtonText: 'Batal'
-                }).then((result) =>
-                {
-                    if (!result.isConfirmed)
-                    {
-                        return;
-                    }
+            mobileAuthSection.innerHTML = `
+                <a href="${BASE_URL}orders" class="mobile-menu-btn">
+                    <i class="bi bi-receipt"></i>
+                    <span>Riwayat Pesanan</span>
+                </a>
+                <button id="mobileLogoutBtn" class="mobile-menu-btn mobile-logout-btn">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                </button>
+            `;
 
-                    localStorage.removeItem('customer_token');
-                    localStorage.removeItem('customer_user');
-                    localStorage.removeItem('customer_name');
-                    window.location.href = BASE_URL;
+            const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+            if (mobileLogoutBtn)
+            {
+                mobileLogoutBtn.addEventListener('click', () =>
+                {
+                    Swal.fire({
+                        title: 'Keluar akun?',
+                        text: 'Anda akan logout dari akun customer.',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, logout',
+                        cancelButtonText: 'Batal'
+                    }).then((result) =>
+                    {
+                        if (!result.isConfirmed)
+                        {
+                            return;
+                        }
+
+                        localStorage.removeItem('customer_token');
+                        localStorage.removeItem('customer_user');
+                        localStorage.removeItem('customer_name');
+                        window.location.href = BASE_URL;
+                    });
                 });
             }
-            else
-            {
-                window.location.href = `${BASE_URL}login`;
-            }
-        });
+        }
+        else
+        {
+            mobileAuthSection.innerHTML = `
+                <a href="${BASE_URL}login" class="mobile-menu-btn">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Login</span>
+                </a>
+            `;
+        }
     }
 
     // Update mobile logo

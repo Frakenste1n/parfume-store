@@ -99,6 +99,9 @@ function renderLatestOrders(orders)
 
         $.each(orders, function (i, item) {
 
+            const paymentStatus = item.payment_status || 'pending';
+            const statusClass = paymentStatus === 'paid' ? 'paid' : (paymentStatus === 'failed' ? 'failed' : (paymentStatus === 'cancelled' ? 'cancelled' : 'pending'));
+
             html += `
 
             <tr>
@@ -117,15 +120,15 @@ function renderLatestOrders(orders)
 
                 <td>
 
-                    ${rupiah(item.total_price)}
+                    ${rupiah(item.grand_total || item.subtotal || 0)}
 
                 </td>
 
                 <td>
 
-                    <span class="status ${item.status}">
+                    <span class="status ${statusClass}">
 
-                        ${capitalize(item.status)}
+                        ${capitalize(paymentStatus)}
 
                     </span>
 
@@ -133,7 +136,7 @@ function renderLatestOrders(orders)
 
                 <td>
 
-                    ${item.created_at}
+                    ${formatDate(item.created_at)}
 
                 </td>
 
@@ -324,4 +327,17 @@ function capitalize(str)
     return str.charAt(0).toUpperCase() +
         str.slice(1);
 
+}
+
+function formatDate(value) {
+    if (!value) return "-";
+    const date = new Date(String(value).replace(" ", "T"));
+    if (isNaN(date.getTime())) return value;
+    return date.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
 }

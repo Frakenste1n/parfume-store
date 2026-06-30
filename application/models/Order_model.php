@@ -49,12 +49,8 @@ class Order_model extends CI_Model
 
         $order_number='ORD'.date('YmdHis');
 
-        // Get user address if not provided
-        if (!$shipping_address)
-        {
-            $user = $this->db->where('id', $user_id)->get('users')->row();
-            $shipping_address = $user->address ?? '';
-        }
+        // Store shipping address in notes since shipping_address column doesn't exist
+        $notes = $shipping_address ? 'Alamat Pengiriman: ' . $shipping_address : '';
 
         $this->db->insert('orders',[
             'user_id'=>$user_id,
@@ -62,7 +58,8 @@ class Order_model extends CI_Model
             'subtotal'=>$subtotal,
             'grand_total'=>$subtotal,
             'payment_status'=>'paid',
-            'shipping_address'=>$shipping_address
+            'status'=>'pending',
+            'notes'=>$notes
         ]);
 
         $order_id=$this->db->insert_id();
@@ -91,13 +88,15 @@ class Order_model extends CI_Model
         $this->db->insert('payment_transactions',[
             'order_id'=>$order_id,
             'payment_method_id'=>$payment_method_id,
-            'amount'=>$subtotal
+            'amount'=>$subtotal,
+            'status'=>'paid',
+            'paid_at'=>date('Y-m-d H:i:s')
         ]);
 
         $this->db->insert('order_status_histories',[
             'order_id'=>$order_id,
             'status'=>'paid',
-            'description'=>'Pesanan berhasil dibuat dan dibayar'
+            'description'=>'Pesanan berhasil dibuat dan pembayaran diterima'
         ]);
 
         $this->db
@@ -121,6 +120,17 @@ class Order_model extends CI_Model
             ->select('orders.*, users.name')
             ->from('orders')
             ->join('users','users.id=orders.user_id')
+            ->order_by('orders.id','DESC')
+            ->get()
+            ->result();
+    }
+
+    public function get_user_orders($user_id)
+    {
+        return $this->db
+            ->select('orders.*')
+            ->from('orders')
+            ->where('orders.user_id', $user_id)
             ->order_by('orders.id','DESC')
             ->get()
             ->result();
@@ -176,23 +186,31 @@ class Order_model extends CI_Model
             return false;
         }
 
-        // Only allow cancel if status is paid
-        if ($order->payment_status !== 'paid')
+        // Only allow cancel if status is pending or paid (not completed)
+        if (!in_array($order->status, ['pending', 'processing', 'shipped']))
         {
             return false;
         }
 
         // Update order status to cancelled
         $this->db->where('id', $id)->update('orders', [
-            'payment_status' => 'cancelled'
+            'status' => 'cancelled',
+            'payment_status' => 'failed'
         ]);
 
         // Add to status history
         $this->db->insert('order_status_histories', [
             'order_id'    => $id,
             'status'      => 'cancelled',
-            'description' => 'Pesanan dibatalkan'
+            'description' => 'Pesanan dibatalkan oleh customer'
         ]);
+
+        // Update payment transaction status
+        $this->db
+            ->where('order_id', $id)
+            ->update('payment_transactions', [
+                'status' => 'failed'
+            ]);
 
         // Restore stock
         $items = $this->db->where('order_id', $id)->get('order_items')->result();
