@@ -158,7 +158,6 @@ function saveFounder() {
     const formEl = document.getElementById("founderForm");
     const formData = new FormData(formEl);
     const id = $("#founderId").val();
-    const hasFile = $("#founderPhoto")[0].files.length > 0;
 
     if (!$("#founderName").val().trim()) {
         Swal.fire({ icon: "warning", title: "Validasi", text: "Nama founder wajib diisi" });
@@ -171,11 +170,10 @@ function saveFounder() {
     }
 
     const url = id ? base_url + "api/founders/" + id : base_url + "api/founders";
-    const method = id ? "PUT" : "POST";
 
     $.ajax({
         url: url,
-        type: method,
+        type: "POST",
         data: formData,
         processData: false,
         contentType: false,

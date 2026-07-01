@@ -138,6 +138,14 @@ body::after{
 
 .auth-logo{
 
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    width:100%;
+
     text-decoration:none;
 
     margin-bottom:40px;

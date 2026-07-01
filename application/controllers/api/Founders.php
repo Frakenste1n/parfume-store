@@ -81,6 +81,16 @@ class Founders extends Base_api {
 
     public function update_put($id)
     {
+        return $this->do_update($id, $this->put());
+    }
+
+    public function update_post($id)
+    {
+        return $this->do_update($id, $this->post());
+    }
+
+    private function do_update($id, $input)
+    {
         $founder = $this->Founder_model->find($id);
 
         if (!$founder)
@@ -88,7 +98,7 @@ class Founders extends Base_api {
             return $this->error_response('Founder tidak ditemukan', 404);
         }
 
-        $this->form_validation->set_data($this->put());
+        $this->form_validation->set_data($input);
         $this->form_validation->set_rules('name', 'Nama', 'required|trim|max_length[100]');
         $this->form_validation->set_rules('position', 'Jabatan', 'required|trim|max_length[100]');
         $this->form_validation->set_rules('whatsapp', 'WhatsApp', 'trim|max_length[30]');
@@ -99,15 +109,18 @@ class Founders extends Base_api {
             return $this->error_response('Validasi gagal', $this->form_validation->error_array(), 422);
         }
 
+        $is_active = isset($input['is_active'])
+            ? ($input['is_active'] === 'true' || $input['is_active'] === TRUE || $input['is_active'] === '1' || $input['is_active'] === 'on')
+            : FALSE;
+
         $data = [
-            'name' => $this->put('name'),
-            'position' => $this->put('position'),
-            'whatsapp' => $this->put('whatsapp'),
-            'instagram' => $this->put('instagram'),
-            'is_active' => $this->put('is_active') === 'true' || $this->put('is_active') === TRUE || $this->put('is_active') === '1'
+            'name' => $input['name'] ?? null,
+            'position' => $input['position'] ?? null,
+            'whatsapp' => $input['whatsapp'] ?? null,
+            'instagram' => $input['instagram'] ?? null,
+            'is_active' => $is_active
         ];
 
-        // Handle photo upload
         if (!empty($_FILES['photo']['name']))
         {
             $upload = upload_image('photo', './uploads/founders/');
@@ -117,7 +130,6 @@ class Founders extends Base_api {
                 return $this->error_response('Gagal mengupload foto: ' . $upload['message'], 400);
             }
 
-            // Delete old photo if exists
             if ($founder->photo)
             {
                 @unlink('./uploads/founders/' . $founder->photo);

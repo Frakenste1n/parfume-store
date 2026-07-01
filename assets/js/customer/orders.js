@@ -12,22 +12,14 @@ async function loadOrders() {
     }
 
     try {
-        const response = await apiGet(`orders?user_id=${userId}`);
-        
-        console.log('[ORDERS RESPONSE]', response);
-        
-        if (!response || !response.success) {
-            console.error('[ORDERS API ERROR]', response);
-            renderError(content, 'Gagal memuat riwayat pesanan. API error.');
-            return;
-        }
+        const orders = await apiGet(`orders?user_id=${userId}`);
 
-        if (!response.data || response.data.length === 0) {
+        if (!orders || orders.length === 0) {
             renderEmptyState(content);
             return;
         }
 
-        renderOrders(response.data);
+        renderOrders(orders);
     } catch (error) {
         console.error('[ORDERS ERROR]', error);
         renderError(content, 'Gagal memuat riwayat pesanan. Silakan refresh halaman.');
@@ -111,9 +103,9 @@ function renderError(content, message) {
 
 async function viewOrderDetail(orderId) {
     try {
-        const response = await apiGet(`orders/${orderId}`);
-        
-        if (!response || !response.data) {
+        const order = await apiGet(`orders/${orderId}`);
+
+        if (!order) {
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
@@ -121,8 +113,6 @@ async function viewOrderDetail(orderId) {
             });
             return;
         }
-
-        const order = response.data;
         
         let itemsHtml = '';
         if (order.items && order.items.length) {

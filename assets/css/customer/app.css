@@ -358,21 +358,32 @@ img{
     gap:12px;
 }
 
+#mobileAuthSection{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    width:100%;
+}
+
 .mobile-menu-btn{
     display:flex;
     align-items:center;
     justify-content:center;
     gap:12px;
+    width:100%;
     padding:16px;
     border-radius:16px;
     background:#FAF6F0;
     border:none;
     color:#4B4035;
+    font-family:inherit;
+    font-size:15px;
     font-weight:600;
     text-decoration:none;
     cursor:pointer;
     transition:all 0.3s ease;
     position:relative;
+    box-sizing:border-box;
 }
 
 .mobile-menu-btn:hover{

@@ -100,6 +100,7 @@ $route['api/founders']['GET'] = 'api/founders/index';
 $route['api/founders']['POST'] = 'api/founders/store';
 $route['api/founders/(:num)']['GET'] = 'api/founders/detail/$1';
 $route['api/founders/(:num)']['PUT'] = 'api/founders/update/$1';
+$route['api/founders/(:num)']['POST'] = 'api/founders/update/$1';
 $route['api/founders/(:num)']['DELETE'] = 'api/founders/delete/$1';
 $route['api/founders/(:num)/toggle']['PUT'] = 'api/founders/toggle/$1';
 

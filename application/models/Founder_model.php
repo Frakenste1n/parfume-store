@@ -35,8 +35,7 @@ class Founder_model extends CI_Model {
 
     public function update($id, $data)
     {
-        $this->db->where('id', $id)->update('founders', $data);
-        return $this->db->affected_rows() > 0;
+        return $this->db->where('id', $id)->update('founders', $data);
     }
 
     public function delete($id)
